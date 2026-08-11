@@ -1,0 +1,11 @@
+<template>
+  <div :class="['max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full', customClass]">
+    <slot />
+  </div>
+</template>
+
+<script setup lang="ts">
+defineProps<{
+  customClass?: string;
+}>();
+</script>
