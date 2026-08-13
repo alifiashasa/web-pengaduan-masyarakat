@@ -2,7 +2,7 @@
   <span
     :class="[
       'h-[30px] inline-flex items-center justify-center px-3.5 rounded-full text-sm font-medium shadow-2xs whitespace-nowrap',
-      statusConfig.classes
+      statusConfig.classes,
     ]"
   >
     {{ statusConfig.label }}
@@ -12,7 +12,15 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-type StatusType = 'terkirim' | 'pending' | 'proses' | 'diproses' | 'ditangani' | 'selesai' | 'dibatalkan' | 'ditolak';
+type StatusType =
+  | 'terkirim'
+  | 'pending'
+  | 'proses'
+  | 'diproses'
+  | 'ditangani'
+  | 'selesai'
+  | 'dibatalkan'
+  | 'ditolak';
 
 const props = defineProps<{
   status: StatusType;

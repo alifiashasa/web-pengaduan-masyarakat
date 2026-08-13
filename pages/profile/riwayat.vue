@@ -1,40 +1,62 @@
 <template>
-  <div class="p-4 sm:p-4 lg:p-4 bg-[#F3F4F6] min-h-screen lg:h-full w-full flex-1 flex flex-col justify-start lg:overflow-hidden">
+  <div
+    class="p-4 sm:p-4 lg:p-4 bg-[#F3F4F6] min-h-screen lg:h-full w-full flex-1 flex flex-col justify-start lg:overflow-hidden"
+  >
     <div class="flex flex-col lg:flex-row gap-4 items-start w-full lg:h-full lg:overflow-hidden">
-      <!-- Sidebar -->
+      <!-- Sidebar Navigasi -->
       <div class="w-full lg:w-[308px] shrink-0 lg:h-full lg:overflow-hidden lg:rounded-[20px]">
         <ProfileSidebar />
       </div>
 
-      <!-- Main Content Column -->
       <div class="flex-1 min-w-0 flex flex-col gap-4 w-full lg:h-full lg:overflow-hidden">
-        <!-- Header Nav (Next to Sidebar) -->
-        <nav class="w-full h-[80px] shrink-0 bg-white rounded-2xl border border-gray-100 px-16 shadow-sm flex items-center justify-between gap-[10px]">
-          <!-- Breadcrumb -->
+        <nav
+          class="w-full h-[80px] shrink-0 bg-white rounded-2xl border border-gray-100 px-16 shadow-sm flex items-center justify-between gap-[10px]"
+        >
           <div class="flex items-center gap-2 text-sm">
             <span class="font-semibold text-gray-900">Riwayat Pengaduan</span>
           </div>
 
-          <!-- Header Nav Links & User Info -->
           <div class="flex flex-wrap items-center gap-5 sm:gap-6 text-sm">
-            <a href="#tentang" class="text-[#757575] hover:text-gray-900 transition-colors font-medium">Tentang Kami</a>
-            <a href="#faq" class="text-[#757575] hover:text-gray-900 transition-colors font-medium">FAQ</a>
-            <a href="#kontak" class="text-[#757575] hover:text-gray-900 transition-colors font-medium">Kontak</a>
-            <NuxtLink to="/replication-request" class="font-medium text-[#0A0A0A] hover:text-[#F67011] transition-colors">
+            <NuxtLink
+              to="/#tentang"
+              class="text-[#757575] hover:text-gray-900 transition-colors font-medium"
+              >Tentang Kami</NuxtLink
+            >
+            <NuxtLink
+              to="/faq"
+              class="text-[#757575] hover:text-gray-900 transition-colors font-medium"
+              >FAQ</NuxtLink
+            >
+            <NuxtLink
+              to="/kontak"
+              class="text-[#757575] hover:text-gray-900 transition-colors font-medium"
+              >Kontak</NuxtLink
+            >
+            <NuxtLink
+              to="/replication-request"
+              class="font-medium text-[#0A0A0A] hover:text-[#F67011] transition-colors"
+            >
               Replication Request
             </NuxtLink>
             <div class="flex items-center gap-2 pl-2">
-              <img :src="user.avatarUrl" :alt="user.name" class="w-8 h-8 rounded-full object-cover border border-gray-200" />
+              <img
+                :src="user.avatarUrl"
+                :alt="user.name"
+                class="w-8 h-8 rounded-full object-cover border border-gray-200"
+              />
               <span class="font-medium text-[#757575] text-xs sm:text-sm">{{ user.email }}</span>
             </div>
           </div>
         </nav>
 
-        <!-- Main Card Container Wrapper -->
-        <div class="w-full bg-[#FEFFFF] rounded-[24px] border border-[#EDEDED] p-6 sm:p-8 shadow-2xs space-y-6 lg:flex-1 lg:overflow-y-auto">
-          <!-- Filter Tabs Container -->
+        <div
+          class="w-full bg-[#FEFFFF] rounded-[24px] border border-[#EDEDED] p-6 sm:p-8 shadow-2xs space-y-6 lg:flex-1 lg:overflow-y-auto"
+        >
+          <!-- Tab Filter Status Laporan -->
           <div>
-            <div class="h-[56px] bg-[#F5F5F5] p-2 rounded-[16px] inline-flex items-center gap-3 max-w-full overflow-x-auto">
+            <div
+              class="h-[56px] bg-[#F5F5F5] p-2 rounded-[16px] inline-flex items-center gap-3 max-w-full overflow-x-auto"
+            >
               <button
                 v-for="tab in filterTabs"
                 :key="tab.id"
@@ -43,7 +65,7 @@
                   'h-[40px] px-[12px] py-[8px] gap-[4px] rounded-[12px] text-sm sm:text-base font-medium transition-all cursor-pointer whitespace-nowrap flex items-center justify-center border',
                   activeFilter === tab.id
                     ? 'bg-[#FEFFFF] text-gray-900 border-[#E0E0E0] shadow-2xs font-semibold'
-                    : 'bg-transparent text-[#757575] border-transparent hover:text-gray-900'
+                    : 'bg-transparent text-[#757575] border-transparent hover:text-gray-900',
                 ]"
                 @click="activeFilter = tab.id"
               >
@@ -52,7 +74,7 @@
             </div>
           </div>
 
-          <!-- Report List -->
+          <!-- Daftar Riwayat Laporan -->
           <div v-if="filteredReports.length > 0 && !isMockEmpty" class="space-y-4">
             <ReportCard
               v-for="report in filteredReports"
@@ -63,7 +85,6 @@
             />
           </div>
 
-          <!-- Empty State -->
           <EmptyState
             v-else
             plain
@@ -73,7 +94,7 @@
           >
             <template #icon>
               <img
-                src="/images/empty-history.svg"
+                src="/assets/illustrations/empty-history.svg"
                 alt="Belum Ada Riwayat Pengaduan"
                 class="w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] object-contain mb-8 select-none mx-auto"
               />
@@ -88,16 +109,19 @@
             </template>
           </EmptyState>
         </div>
+
+        <div class="text-[#E0E0E0] text-xs font-normal shrink-0">
+          © 2025 MUM. All rights reserved.
+        </div>
       </div>
     </div>
 
-    <!-- Modals & Toasts -->
     <ReportDetailModal
       :isOpen="showDetailModal"
       :report="selectedReport"
       @close="showDetailModal = false"
     />
-    
+
     <DeleteReportModal
       :isOpen="showDeleteModal"
       :report="selectedReport"

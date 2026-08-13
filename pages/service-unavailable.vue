@@ -9,7 +9,7 @@
       >
         <template #icon>
           <img
-            src="/images/service-unavailable.svg"
+            src="/assets/illustrations/service-unavailable.svg"
             alt="Layanan Sementara Tidak Tersedia"
             class="w-[320px] h-[320px] object-contain mb-8 md:mb-1 select-none"
           />
@@ -36,8 +36,9 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Halaman ini sementara tidak dapat diakses karena kami sedang melakukan pemeliharaan sistem guna meningkatkan performa, keamanan, dan kenyamanan penggunaan.'
-    }
-  ]
+      content:
+        'Halaman ini sementara tidak dapat diakses karena kami sedang melakukan pemeliharaan sistem guna meningkatkan performa, keamanan, dan kenyamanan penggunaan.',
+    },
+  ],
 });
 </script>

@@ -34,14 +34,12 @@
             <div class="mt-5 space-y-3.5">
               <label class="flex items-start gap-3 cursor-pointer select-none">
                 <div class="relative flex items-center mt-0.5 shrink-0">
-                  <input
-                    v-model="rulesAccepted"
-                    type="checkbox"
-                    class="sr-only"
-                  />
+                  <input v-model="rulesAccepted" type="checkbox" class="sr-only" />
                   <div
                     class="flex h-5 w-5 items-center justify-center rounded-[5px] border-[1.5px] transition-all"
-                    :class="rulesAccepted ? 'bg-[#E75A0F] border-[#E75A0F]' : 'bg-white border-[#18171C]'"
+                    :class="
+                      rulesAccepted ? 'bg-[#E75A0F] border-[#E75A0F]' : 'bg-white border-[#18171C]'
+                    "
                   >
                     <svg
                       v-if="rulesAccepted"
@@ -70,14 +68,14 @@
 
               <label class="flex items-start gap-3 cursor-pointer select-none">
                 <div class="relative flex items-center mt-0.5 shrink-0">
-                  <input
-                    v-model="responsibilityAccepted"
-                    type="checkbox"
-                    class="sr-only"
-                  />
+                  <input v-model="responsibilityAccepted" type="checkbox" class="sr-only" />
                   <div
                     class="flex h-5 w-5 items-center justify-center rounded-[5px] border-[1.5px] transition-all"
-                    :class="responsibilityAccepted ? 'bg-[#E75A0F] border-[#E75A0F]' : 'bg-white border-[#18171C]'"
+                    :class="
+                      responsibilityAccepted
+                        ? 'bg-[#E75A0F] border-[#E75A0F]'
+                        : 'bg-white border-[#18171C]'
+                    "
                   >
                     <svg
                       v-if="responsibilityAccepted"
@@ -116,38 +114,38 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import TermsModal from './TermsModal.vue'
+import { computed, ref, watch } from 'vue';
+import TermsModal from './TermsModal.vue';
 
 const props = defineProps<{
-  isOpen: boolean
-}>()
+  isOpen: boolean;
+}>();
 
-const emit = defineEmits(['close', 'confirm'])
+const emit = defineEmits(['close', 'confirm']);
 
-const rulesAccepted = ref(false)
-const responsibilityAccepted = ref(false)
-const showTermsModal = ref(false)
+const rulesAccepted = ref(false);
+const responsibilityAccepted = ref(false);
+const showTermsModal = ref(false);
 
-const canSubmit = computed(() => rulesAccepted.value && responsibilityAccepted.value)
+const canSubmit = computed(() => rulesAccepted.value && responsibilityAccepted.value);
 
 watch(
   () => props.isOpen,
   (newVal) => {
     if (!newVal) {
-      rulesAccepted.value = false
-      responsibilityAccepted.value = false
+      rulesAccepted.value = false;
+      responsibilityAccepted.value = false;
     }
   }
-)
+);
 
 const openTerms = () => {
-  showTermsModal.value = true
-}
+  showTermsModal.value = true;
+};
 
 const handleConfirm = () => {
   if (canSubmit.value) {
-    emit('confirm')
+    emit('confirm');
   }
-}
+};
 </script>

@@ -5,11 +5,17 @@ export interface LocationData {
 export const useLocation = () => {
   const locations: LocationData = {
     'DI Yogyakarta': ['Kota Yogyakarta', 'Sleman', 'Bantul', 'Kulon Progo', 'Gunungkidul'],
-    'DKI Jakarta': ['Jakarta Selatan', 'Jakarta Pusat', 'Jakarta Barat', 'Jakarta Timur', 'Jakarta Utara'],
+    'DKI Jakarta': [
+      'Jakarta Selatan',
+      'Jakarta Pusat',
+      'Jakarta Barat',
+      'Jakarta Timur',
+      'Jakarta Utara',
+    ],
     'Jawa Barat': ['Bandung', 'Bekasi', 'Bogor', 'Depok', 'Cimahi', 'Tasikmalaya'],
     'Jawa Tengah': ['Semarang', 'Surakarta', 'Magelang', 'Salatiga', 'Pekalongan'],
     'Jawa Timur': ['Surabaya', 'Malang', 'Batu', 'Kediri', 'Madiun'],
-    'Bali': ['Denpasar', 'Badung', 'Gianyar', 'Tabanan'],
+    Bali: ['Denpasar', 'Badung', 'Gianyar', 'Tabanan'],
   };
 
   const getProvinces = () => Object.keys(locations);

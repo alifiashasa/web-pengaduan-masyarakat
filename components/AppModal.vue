@@ -25,19 +25,33 @@
             v-if="isOpen"
             :class="[
               'bg-[#FEFFFF] rounded-[12px] shadow-[0_4px_15px_rgba(16,24,40,0.12)] w-full overflow-hidden max-h-[90vh] flex flex-col',
-              customClass || maxWidthClass
+              customClass || maxWidthClass,
             ]"
           >
             <!-- Modal Header -->
-            <div v-if="title" class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div
+              v-if="title"
+              class="px-6 py-4 border-b border-gray-100 flex items-center justify-between"
+            >
               <h3 class="text-lg font-bold text-gray-900">{{ title }}</h3>
               <button
                 type="button"
                 class="p-1 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none"
                 @click="$emit('close')"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -48,7 +62,10 @@
             </div>
 
             <!-- Modal Footer (Optional) -->
-            <div v-if="$slots.footer" class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-end gap-3">
+            <div
+              v-if="$slots.footer"
+              class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-end gap-3"
+            >
               <slot name="footer" />
             </div>
           </div>

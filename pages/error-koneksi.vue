@@ -9,7 +9,7 @@
       >
         <template #icon>
           <img
-            src="/images/connection-error.svg"
+            src="/assets/illustrations/connection-error.svg"
             alt="Koneksi Tidak Tersedia"
             class="w-[320px] h-[320px] object-contain mb-8 md:mb-1 select-none"
           />
@@ -36,8 +36,9 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Saat ini kami belum dapat menghubungkan Anda ke layanan Vide. Pastikan koneksi internet Anda stabil, lalu silakan coba kembali.'
-    }
-  ]
+      content:
+        'Saat ini kami belum dapat menghubungkan Anda ke layanan Vide. Pastikan koneksi internet Anda stabil, lalu silakan coba kembali.',
+    },
+  ],
 });
 </script>

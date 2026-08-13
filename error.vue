@@ -1,29 +1,29 @@
 <template>
   <div class="min-h-screen flex flex-col bg-[#FEFFFF] text-[#0A0A0A] font-sans">
-    <!-- Public Navbar -->
     <AppNavbar />
 
-    <!-- Main 404 Content -->
+    <!-- Konten Utama Error -->
     <main class="flex-1 flex flex-col items-center justify-center py-12 md:py-16 px-4 text-center">
       <div class="flex flex-col items-center max-w-[600px] mx-auto">
-        <!-- 404 Illustration from Figma -->
         <img
-          src="/images/404-error.png"
+          src="/assets/illustrations/404-error.webp"
           alt="404 Error"
           class="w-[320px] h-[320px] object-contain mb-8 md:mb-4 select-none"
         />
 
-        <!-- Title -->
-        <h1 class="text-[24px] md:text-[32px] font-semibold text-gray-900 mb-3 tracking-tight leading-tight">
+        <h1
+          class="text-[24px] md:text-[32px] font-semibold text-gray-900 mb-3 tracking-tight leading-tight"
+        >
           Terjadi Kendala Pada Sistem Kami
         </h1>
 
-        <!-- Description -->
-        <p class="text-[14px] md:text-[16px] text-[#757575] leading-relaxed mb-10 max-w-[660px] mx-auto">
-          Kami tidak dapat menemukan halaman yang Anda cari. Pastikan alamat halaman sudah benar atau silakan kembali ke halaman utama.
+        <p
+          class="text-[14px] md:text-[16px] text-[#757575] leading-relaxed mb-10 max-w-[660px] mx-auto"
+        >
+          Kami tidak dapat menemukan halaman yang Anda cari. Pastikan alamat halaman sudah benar
+          atau silakan kembali ke halaman utama.
         </p>
 
-        <!-- Button -->
         <button
           type="button"
           @click="handleBackToHome"
@@ -34,7 +34,6 @@
       </div>
     </main>
 
-    <!-- Public Footer -->
     <AppFooter />
   </div>
 </template>

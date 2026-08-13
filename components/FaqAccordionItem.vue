@@ -38,10 +38,7 @@
     </button>
 
     <!-- Answer panel -->
-    <div
-      v-if="isOpen"
-      class="pb-5"
-    >
+    <div v-if="isOpen" class="pb-5">
       <p class="text-[13px] leading-[1.75] text-[#555555]">
         {{ answer }}
       </p>
@@ -50,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
 
 const props = defineProps<{
   first?: boolean;

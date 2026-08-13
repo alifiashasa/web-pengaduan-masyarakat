@@ -28,8 +28,18 @@
             <!-- Header Section -->
             <div class="flex items-center gap-4 mb-5">
               <!-- Icon Box -->
-              <div class="w-12 h-12 rounded-xl bg-[#E75A0F] flex items-center justify-center shrink-0 text-white shadow-xs">
-                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <div
+                class="w-12 h-12 rounded-xl bg-[#E75A0F] flex items-center justify-center shrink-0 text-white shadow-xs"
+              >
+                <svg
+                  class="w-6 h-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <polyline points="14 2 14 8 20 8" />
                   <line x1="16" y1="13" x2="8" y2="13" />
@@ -40,15 +50,24 @@
 
               <!-- Title & Subtitle -->
               <div>
-                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">Syarat & Ketentuan</h3>
-                <p class="text-xs sm:text-sm text-[#757575] font-regular mt-0.5">Terakhir Diperbarui: 23 Desember 2025</p>
+                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
+                  Syarat & Ketentuan
+                </h3>
+                <p class="text-xs sm:text-sm text-[#757575] font-regular mt-0.5">
+                  Terakhir Diperbarui: 23 Desember 2025
+                </p>
               </div>
             </div>
 
             <!-- Scrollable Content Box -->
-            <div class="bg-gray-50/80 border border-gray-100/80 rounded-2xl p-5 mb-6 max-h-[360px] sm:max-h-[400px] overflow-y-auto text-xs sm:text-sm text-[#OAOAOA] leading-relaxed space-y-4">
+            <div
+              class="bg-gray-50/80 border border-gray-100/80 rounded-2xl p-5 mb-6 max-h-[360px] sm:max-h-[400px] overflow-y-auto text-xs sm:text-sm text-[#OAOAOA] leading-relaxed space-y-4"
+            >
               <p>
-                Selamat datang di Vide. Dengan mengakses dan menggunakan platform ini, Anda dianggap telah membaca, memahami, dan menyetujui untuk terikat oleh Syarat dan Ketentuan berikut. Jika Anda tidak menyetujui bagian apa pun dari ketentuan ini, mohon untuk tidak melanjutkan penggunaan layanan kami.
+                Selamat datang di Vide. Dengan mengakses dan menggunakan platform ini, Anda dianggap
+                telah membaca, memahami, dan menyetujui untuk terikat oleh Syarat dan Ketentuan
+                berikut. Jika Anda tidak menyetujui bagian apa pun dari ketentuan ini, mohon untuk
+                tidak melanjutkan penggunaan layanan kami.
               </p>
 
               <div class="space-y-2">
@@ -56,25 +75,40 @@
                 <ul class="space-y-1.5 pl-2">
                   <li class="flex items-start gap-2">
                     <span class="text-gray-400 select-none">•</span>
-                    <span>Vide adalah platform penyampaian aspirasi dan laporan masyarakat yang bertujuan untuk meningkatkan transparansi dan kualitas layanan publik.</span>
+                    <span
+                      >Vide adalah platform penyampaian aspirasi dan laporan masyarakat yang
+                      bertujuan untuk meningkatkan transparansi dan kualitas layanan publik.</span
+                    >
                   </li>
                   <li class="flex items-start gap-2">
                     <span class="text-gray-400 select-none">•</span>
-                    <span>Layanan ini tersedia untuk masyarakat umum dengan batasan wilayah yang telah ditentukan oleh pengelola.</span>
+                    <span
+                      >Layanan ini tersedia untuk masyarakat umum dengan batasan wilayah yang telah
+                      ditentukan oleh pengelola.</span
+                    >
                   </li>
                 </ul>
               </div>
 
               <div class="space-y-2">
-                <h4 class="font-semibold text-gray-900 text-sm sm:text-base">2. Penggunaan Layanan (Laporan & Aspirasi)</h4>
+                <h4 class="font-semibold text-gray-900 text-sm sm:text-base">
+                  2. Penggunaan Layanan (Laporan & Aspirasi)
+                </h4>
                 <ul class="space-y-1.5 pl-2">
                   <li class="flex items-start gap-2">
                     <span class="text-gray-400 select-none">•</span>
-                    <span>Pengguna wajib memberikan informasi yang benar, akurat, dan dapat dipertanggungjawabkan dalam setiap laporan atau aspirasi yang dikirimkan.</span>
+                    <span
+                      >Pengguna wajib memberikan informasi yang benar, akurat, dan dapat
+                      dipertanggungjawabkan dalam setiap laporan atau aspirasi yang
+                      dikirimkan.</span
+                    >
                   </li>
                   <li class="flex items-start gap-2">
                     <span class="text-gray-400 select-none">•</span>
-                    <span>Dilarang keras mengirimkan konten yang mengandung unsur SARA, pornografi, ujaran kebencian, fitnah, atau informasi palsu</span>
+                    <span
+                      >Dilarang keras mengirimkan konten yang mengandung unsur SARA, pornografi,
+                      ujaran kebencian, fitnah, atau informasi palsu</span
+                    >
                   </li>
                 </ul>
               </div>

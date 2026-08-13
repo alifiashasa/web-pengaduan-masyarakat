@@ -4,7 +4,7 @@
       {{ label }}
       <span v-if="required" class="text-red-500">*</span>
     </label>
-    
+
     <textarea
       :id="id"
       :value="modelValue"

@@ -1,10 +1,12 @@
 <template>
-  <div class="w-full lg:w-[308px] h-auto lg:h-[960px] bg-[#FEFFFF] rounded-[20px] border border-[#EDEDED] p-6 shadow-xs flex flex-col items-center text-center justify-start shrink-0">
+  <div
+    class="w-full lg:w-[308px] h-auto lg:h-[960px] bg-[#FEFFFF] rounded-[20px] border border-[#EDEDED] p-6 shadow-xs flex flex-col items-center text-center justify-start shrink-0"
+  >
     <div class="w-full flex flex-col items-center text-center">
       <!-- Hermes Paris Logo -->
       <div class="mb-10 flex items-center justify-center pt-2">
         <img
-          src="/images/herms_logo.svg.svg"
+          src="/assets/icons/herms_logo.svg.svg"
           alt="HERMÈS PARIS"
           class="h-[32px] w-[55px] filter brightness-0"
         />
@@ -30,13 +32,16 @@
             'flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular transition-all',
             currentRoute === '/profile'
               ? 'bg-[#F67011] text-white shadow-xs pointer-events-none'
-              : 'text-gray-700 hover:bg-gray-100 cursor-pointer'
+              : 'text-gray-700 hover:bg-gray-100 cursor-pointer',
           ]"
         >
           <img
-            src="/images/icon-user-circle.svg"
+            src="/assets/icons/icon-user-circle.svg"
             alt="Profile"
-            :class="['w-5 h-5 shrink-0 transition-all', currentRoute === '/profile' ? 'brightness-0 invert' : '']"
+            :class="[
+              'w-5 h-5 shrink-0 transition-all',
+              currentRoute === '/profile' ? 'brightness-0 invert' : '',
+            ]"
           />
           <span>Profile</span>
         </NuxtLink>
@@ -47,13 +52,16 @@
             'flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular transition-all',
             currentRoute === '/profile/riwayat'
               ? 'bg-[#F67011] text-white shadow-xs pointer-events-none'
-              : 'text-gray-700 hover:bg-gray-100 cursor-pointer'
+              : 'text-gray-700 hover:bg-gray-100 cursor-pointer',
           ]"
         >
           <img
-            src="/images/icon-sticky-note.svg"
+            src="/assets/icons/icon-sticky-note.svg"
             alt="Riwayat Pengaduan"
-            :class="['w-5 h-5 shrink-0 transition-all', currentRoute === '/profile/riwayat' ? '' : 'brightness-0 opacity-70']"
+            :class="[
+              'w-5 h-5 shrink-0 transition-all',
+              currentRoute === '/profile/riwayat' ? '' : 'brightness-0 opacity-70',
+            ]"
           />
           <span>Riwayat Pengaduan</span>
         </NuxtLink>
@@ -63,11 +71,7 @@
           class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular hover:bg-orange-50 transition-all w-full text-left cursor-pointer"
           @click="showLogoutDialog = true"
         >
-          <img
-            src="/images/icon-logout.svg"
-            alt="Logout"
-            class="w-5 h-5 shrink-0"
-          />
+          <img src="/assets/icons/icon-logout.svg" alt="Logout" class="w-5 h-5 shrink-0" />
           <span>Logout</span>
         </button>
       </nav>

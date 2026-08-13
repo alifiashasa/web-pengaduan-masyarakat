@@ -26,7 +26,9 @@
 
       <div class="pt-2 flex justify-end gap-3">
         <AppButton variant="secondary" size="md" @click="$emit('close')">Batal</AppButton>
-        <AppButton variant="primary" size="md" type="submit" :disabled="passwordMismatch">Ubah Sandi</AppButton>
+        <AppButton variant="primary" size="md" type="submit" :disabled="passwordMismatch"
+          >Ubah Sandi</AppButton
+        >
       </div>
     </form>
   </AppModal>
@@ -51,7 +53,9 @@ const form = ref({
 });
 
 const passwordMismatch = computed(() => {
-  return form.value.confirmPassword.length > 0 && form.value.newPassword !== form.value.confirmPassword;
+  return (
+    form.value.confirmPassword.length > 0 && form.value.newPassword !== form.value.confirmPassword
+  );
 });
 
 const handleSubmit = () => {

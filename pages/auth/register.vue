@@ -10,12 +10,11 @@ definePageMeta({
   middleware: [
     () => {
       return navigateTo('/auth/login', { replace: true });
-    }
-  ]
+    },
+  ],
 });
 
 if (import.meta.client) {
   navigateTo('/auth/login', { replace: true });
 }
 </script>
-

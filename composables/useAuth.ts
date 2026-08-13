@@ -15,7 +15,8 @@ export const useAuth = () => {
     username: '@andira',
     email: 'grahambell@gmail.com',
     phone: '+62 0812000000000',
-    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+    avatarUrl:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
   }));
 
   const login = () => {

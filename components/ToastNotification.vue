@@ -11,7 +11,7 @@
       <div
         v-if="show"
         class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 max-w-md w-[90%] sm:w-auto min-w-[320px] sm:min-w-[380px] bg-[#E8F7EE] border border-[#D1FDD7] px-6 py-3.5 sm:px-7 sm:py-4 rounded-md shadow-lg shadow-emerald-900/5 flex items-center justify-between gap-6 font-geist"
-        style="border-radius: 8px;"
+        style="border-radius: 8px"
       >
         <!-- Success Message -->
         <p class="text-sm sm:text-base font-semibold text-[#0E9B77] leading-snug">
@@ -39,4 +39,3 @@ defineProps<{
 
 defineEmits(['close']);
 </script>
-

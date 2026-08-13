@@ -6,7 +6,7 @@
         <!-- Brand & Slogan -->
         <div>
           <img
-            src="/images/herms_logo.svg.svg"
+            src="/assets/icons/herms_logo.svg.svg"
             alt="Hermes Logo"
             class="h-8 w-auto object-contain"
           />
@@ -16,16 +16,28 @@
 
         <!-- Links + Top Copyright -->
         <div class="flex flex-wrap items-center gap-x-[72px] gap-y-4 pt-2">
-          <NuxtLink to="/" class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase">
+          <NuxtLink
+            to="/"
+            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase"
+          >
             HOMEPAGE
           </NuxtLink>
-          <a href="#tentang" class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase">
+          <a
+            href="#tentang"
+            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase"
+          >
             TENTANG KAMI
           </a>
-          <NuxtLink to="/faq" class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase">
+          <NuxtLink
+            to="/faq"
+            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase"
+          >
             FAQ
           </NuxtLink>
-          <NuxtLink to="/kontak" class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase">
+          <NuxtLink
+            to="/kontak"
+            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase"
+          >
             KONTAK
           </NuxtLink>
           <span class="text-[14px] text-[#EOEOEO] font-medium ml-4">
@@ -35,10 +47,10 @@
       </div>
 
       <!-- Divider line -->
-      <div class="mt-10 border-t border-[#2A292E] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-[13px] text-[#EOEOEO] font-medium">
-          © 2025 MUM. All rights reserved.
-        </p>
+      <div
+        class="mt-10 border-t border-[#2A292E] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+      >
+        <p class="text-[13px] text-[#EOEOEO] font-medium">© 2025 MUM. All rights reserved.</p>
 
         <!-- Social Icons -->
         <div class="flex items-center gap-4">
@@ -50,7 +62,7 @@
             class="transition-transform hover:scale-110"
             title="WhatsApp"
           >
-            <img src="/images/icon-wa.svg" alt="WhatsApp" class="h-7 w-7 object-contain" />
+            <img src="/assets/icons/icon-wa.svg" alt="WhatsApp" class="h-7 w-7 object-contain" />
           </a>
 
           <!-- X Icon (White) -->
@@ -62,7 +74,9 @@
             title="X (Twitter)"
           >
             <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+              />
             </svg>
           </a>
 
@@ -74,7 +88,7 @@
             class="transition-transform hover:scale-110"
             title="Facebook"
           >
-            <img src="/images/icon-fb.svg" alt="Facebook" class="h-7 w-7 object-contain" />
+            <img src="/assets/icons/icon-fb.svg" alt="Facebook" class="h-7 w-7 object-contain" />
           </a>
         </div>
       </div>
