@@ -1,96 +1,92 @@
 <template>
-  <div class="p-4 sm:p-6 lg:p-8 bg-[#F3F4F6] min-h-screen w-full flex-1 flex flex-col justify-start">
-    <div class="flex flex-col lg:flex-row gap-[20px] items-start w-full">
+  <div class="p-4 sm:p-4 lg:p-4 bg-[#F3F4F6] min-h-screen lg:h-full w-full flex-1 flex flex-col justify-start lg:overflow-hidden">
+    <div class="flex flex-col lg:flex-row gap-4 items-start w-full lg:h-full lg:overflow-hidden">
       <!-- Sidebar -->
-      <div class="w-full lg:w-[308px] shrink-0">
+      <div class="w-full lg:w-[308px] shrink-0 lg:h-full lg:overflow-hidden lg:rounded-[20px]">
         <ProfileSidebar />
       </div>
 
-      <!-- Main Content -->
-      <div class="flex-1 min-w-0 space-y-[20px]">
-          <!-- Header Nav (Next to Sidebar) -->
-          <nav class="w-full h-[80px] bg-white rounded-2xl border border-gray-100 px-6 shadow-sm flex items-center justify-between gap-[10px]">
-            <!-- Breadcrumb -->
-            <div class="flex items-center gap-2 text-sm">
-              <NuxtLink to="/" class="text-gray-500 hover:text-gray-900 transition-colors">Home</NuxtLink>
-              <span class="text-gray-400">></span>
-              <NuxtLink to="/profile" class="text-gray-500 hover:text-gray-900 transition-colors">Profil</NuxtLink>
-              <span class="text-gray-400">></span>
-              <span class="font-bold text-gray-900">Riwayat Pengaduan</span>
-            </div>
+      <!-- Main Content Column -->
+      <div class="flex-1 min-w-0 flex flex-col gap-4 w-full lg:h-full lg:overflow-hidden">
+        <!-- Header Nav (Next to Sidebar) -->
+        <nav class="w-full h-[80px] shrink-0 bg-white rounded-2xl border border-gray-100 px-16 shadow-sm flex items-center justify-between gap-[10px]">
+          <!-- Breadcrumb -->
+          <div class="flex items-center gap-2 text-sm">
+            <span class="font-semibold text-gray-900">Riwayat Pengaduan</span>
+          </div>
 
-            <!-- Header Nav Links & User Info -->
-            <div class="flex flex-wrap items-center gap-5 sm:gap-6 text-sm">
-              <a href="#tentang" class="text-gray-600 hover:text-gray-900 transition-colors font-medium">Tentang Kami</a>
-              <a href="#faq" class="text-gray-600 hover:text-gray-900 transition-colors font-medium">FAQ</a>
-              <a href="#kontak" class="text-gray-600 hover:text-gray-900 transition-colors font-medium">Kontak</a>
-              <NuxtLink to="/replication-request" class="font-bold text-gray-900 hover:text-[#F67011] transition-colors">
-                Replication Request
-              </NuxtLink>
-              <div class="flex items-center gap-2 pl-2">
-                <img :src="user.avatarUrl" :alt="user.name" class="w-8 h-8 rounded-full object-cover border border-gray-200" />
-                <span class="font-semibold text-gray-700 text-xs sm:text-sm">{{ user.email }}</span>
-              </div>
+          <!-- Header Nav Links & User Info -->
+          <div class="flex flex-wrap items-center gap-5 sm:gap-6 text-sm">
+            <a href="#tentang" class="text-[#757575] hover:text-gray-900 transition-colors font-medium">Tentang Kami</a>
+            <a href="#faq" class="text-[#757575] hover:text-gray-900 transition-colors font-medium">FAQ</a>
+            <a href="#kontak" class="text-[#757575] hover:text-gray-900 transition-colors font-medium">Kontak</a>
+            <NuxtLink to="/replication-request" class="font-medium text-[#0A0A0A] hover:text-[#F67011] transition-colors">
+              Replication Request
+            </NuxtLink>
+            <div class="flex items-center gap-2 pl-2">
+              <img :src="user.avatarUrl" :alt="user.name" class="w-8 h-8 rounded-full object-cover border border-gray-200" />
+              <span class="font-medium text-[#757575] text-xs sm:text-sm">{{ user.email }}</span>
             </div>
-          </nav>
+          </div>
+        </nav>
 
-          <div class="w-full bg-[#FEFFFF] rounded-[20px] border border-[#EDEDED] p-6 shadow-xs space-y-[20px]">
-            <!-- Header Title -->
-            <div class="mb-6">
-              <h2 class="text-xl font-bold text-gray-900">Riwayat Pengaduan Saya</h2>
-              <p class="text-xs sm:text-sm text-gray-500">Pantau status dan tanggapan dari seluruh pengaduan yang telah Anda kirimkan.</p>
-            </div>
-
-            <!-- Filter Tabs -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-6 border-b border-gray-100 scrollbar-none">
+        <!-- Main Card Container Wrapper -->
+        <div class="w-full bg-[#FEFFFF] rounded-[24px] border border-[#EDEDED] p-6 sm:p-8 shadow-2xs space-y-6 lg:flex-1 lg:overflow-y-auto">
+          <!-- Filter Tabs Container -->
+          <div>
+            <div class="h-[56px] bg-[#F5F5F5] p-2 rounded-[16px] inline-flex items-center gap-3 max-w-full overflow-x-auto">
               <button
                 v-for="tab in filterTabs"
                 :key="tab.id"
                 type="button"
                 :class="[
-                  'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors flex items-center gap-2 whitespace-nowrap cursor-pointer',
+                  'h-[40px] px-[12px] py-[8px] gap-[4px] rounded-[12px] text-sm sm:text-base font-medium transition-all cursor-pointer whitespace-nowrap flex items-center justify-center border',
                   activeFilter === tab.id
-                    ? 'bg-brand-orange text-white shadow-xs'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-[#FEFFFF] text-gray-900 border-[#E0E0E0] shadow-2xs font-semibold'
+                    : 'bg-transparent text-[#757575] border-transparent hover:text-gray-900'
                 ]"
                 @click="activeFilter = tab.id"
               >
-                <span>{{ tab.label }}</span>
-                <span
-                  :class="[
-                    'px-2 py-0.5 rounded-full text-[10px]',
-                    activeFilter === tab.id ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
-                  ]"
-                >
-                  {{ getCountForTab(tab.id) }}
-                </span>
+                {{ tab.label }}
               </button>
             </div>
-
-            <!-- Report List -->
-            <div v-if="filteredReports.length > 0" class="space-y-4">
-              <ReportCard
-                v-for="report in filteredReports"
-                :key="report.id"
-                :report="report"
-                @view-detail="openDetail"
-                @delete="confirmDelete"
-              />
-            </div>
-
-            <!-- Empty State -->
-            <EmptyState
-              v-else
-              title="Tidak Ada Pengaduan"
-              description="Belum ada laporan pengaduan untuk kategori filter yang dipilih."
-            >
-              <template #action>
-                <NuxtLink to="/">
-                  <AppButton variant="primary" size="sm">Buat Pengaduan Baru</AppButton>
-                </NuxtLink>
-              </template>
-            </EmptyState>
           </div>
+
+          <!-- Report List -->
+          <div v-if="filteredReports.length > 0 && !isMockEmpty" class="space-y-4">
+            <ReportCard
+              v-for="report in filteredReports"
+              :key="report.id"
+              :report="report"
+              @view-detail="openDetail"
+              @delete="confirmDelete"
+            />
+          </div>
+
+          <!-- Empty State -->
+          <EmptyState
+            v-else
+            plain
+            title="Belum Ada Riwayat Pengaduan"
+            description="Anda belum memiliki riwayat pengaduan. Silakan ajukan pengaduan untuk memulai."
+            class="py-12"
+          >
+            <template #icon>
+              <img
+                src="/images/empty-history.svg"
+                alt="Belum Ada Riwayat Pengaduan"
+                class="w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] object-contain mb-8 select-none mx-auto"
+              />
+            </template>
+            <template #action>
+              <NuxtLink
+                to="/"
+                class="inline-flex items-center justify-center px-6 py-2.5 text-[15px] font-semibold text-[#F67011] bg-[#FFF7ED] border border-[#FCD5B6] rounded-xl hover:bg-[#FEEFD7] hover:border-[#FBC49B] transition-all duration-200 shadow-sm cursor-pointer"
+              >
+                Ajukan Pengaduan
+              </NuxtLink>
+            </template>
+          </EmptyState>
         </div>
       </div>
     </div>
@@ -104,16 +100,18 @@
     
     <DeleteReportModal
       :isOpen="showDeleteModal"
+      :report="selectedReport"
       @close="showDeleteModal = false"
       @confirm="handleDeleteConfirm"
     />
 
     <ToastNotification :show="toast.show" :message="toast.message" @close="toast.show = false" />
-  </template>
+  </div>
+</template>
 
 <script setup lang="ts">
 import { ref, computed, reactive } from 'vue';
-import AppContainer from '@/components/AppContainer.vue';
+import { useRoute } from 'vue-router';
 import ProfileSidebar from '@/components/ProfileSidebar.vue';
 import ReportCard from '@/components/ReportCard.vue';
 import EmptyState from '@/components/EmptyState.vue';
@@ -124,30 +122,41 @@ import ToastNotification from '@/components/ToastNotification.vue';
 import { useReports, type ReportItem } from '@/composables/useReports';
 import { useAuth } from '@/composables/useAuth';
 
+definePageMeta({ layout: 'profile' });
+
+const route = useRoute();
 const { user } = useAuth();
 const { reports, deleteReport } = useReports();
 
-const activeFilter = ref('semua');
+const isMockEmpty = computed(() => route.query['mock-empty'] === 'true');
+
+const activeFilter = ref('terkirim');
 
 const filterTabs = [
-  { id: 'semua', label: 'Semua' },
-  { id: 'proses', label: 'Dalam Proses' },
+  { id: 'terkirim', label: 'Terkirim' },
+  { id: 'diproses', label: 'Diproses' },
+  { id: 'ditangani', label: 'Ditangani' },
   { id: 'selesai', label: 'Selesai' },
-  { id: 'ditolak', label: 'Ditolak' },
+  { id: 'dibatalkan', label: 'Dibatalkan' },
 ];
 
-const getCountForTab = (tabId: string) => {
-  if (tabId === 'semua') return reports.value.length;
-  if (tabId === 'proses') return reports.value.filter((r) => r.status === 'proses' || r.status === 'pending').length;
-  return reports.value.filter((r) => r.status === tabId).length;
-};
-
 const filteredReports = computed(() => {
-  if (activeFilter.value === 'semua') return reports.value;
-  if (activeFilter.value === 'proses') {
-    return reports.value.filter((r) => r.status === 'proses' || r.status === 'pending');
+  if (activeFilter.value === 'terkirim') {
+    return reports.value.filter((r) => r.status === 'terkirim' || r.status === 'pending');
   }
-  return reports.value.filter((r) => r.status === activeFilter.value);
+  if (activeFilter.value === 'diproses') {
+    return reports.value.filter((r) => r.status === 'diproses' || r.status === 'proses');
+  }
+  if (activeFilter.value === 'ditangani') {
+    return reports.value.filter((r) => r.status === 'ditangani');
+  }
+  if (activeFilter.value === 'selesai') {
+    return reports.value.filter((r) => r.status === 'selesai');
+  }
+  if (activeFilter.value === 'dibatalkan') {
+    return reports.value.filter((r) => r.status === 'dibatalkan' || r.status === 'ditolak');
+  }
+  return reports.value;
 });
 
 // Modals State

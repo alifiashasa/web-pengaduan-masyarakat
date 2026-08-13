@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden bg-[#FEFFFF] text-[#0A0A0A]">
+  <div class="overflow-x-hidden bg-[#FEFFFF] text-[#0A0A0A]">
     <!-- HERO -->
     <section class="landing-pattern relative pt-[36px] pb-[60px]">
       <div class="relative z-10 mx-auto w-full max-w-[1216px] px-4 sm:px-6 lg:px-0">
@@ -291,7 +291,7 @@
       @close="showConfirmModal = false"
       @confirm="handleTermsConfirmed"
     />
-    <ReportSuccessModal :isOpen="showSuccessModal" @close="showSuccessModal = false" />
+    <ToastNotification :show="toast.show" :message="toast.message" @close="toast.show = false" />
   </div>
 </template>
 
@@ -299,7 +299,7 @@
 import { computed, h, reactive, ref } from 'vue'
 import LoginRequiredModal from '@/components/modals/LoginRequiredModal.vue'
 import ReportConfirmationModal from '@/components/modals/ReportConfirmationModal.vue'
-import ReportSuccessModal from '@/components/modals/ReportSuccessModal.vue'
+import ToastNotification from '@/components/ToastNotification.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useReports } from '@/composables/useReports'
 import { HugeiconsIcon } from '@hugeicons/vue'
@@ -323,7 +323,7 @@ const { addReport } = useReports()
 
 const showLoginModal = ref(false)
 const showConfirmModal = ref(false)
-const showSuccessModal = ref(false)
+const toast = reactive({ show: false, message: '' })
 const isAnonymous = ref(false)
 const hasConfirmedTerms = ref(false)
 
@@ -460,7 +460,12 @@ const processReportSubmission = () => {
     images: attachedFiles.value.map((f) => f.url),
   })
 
-  showSuccessModal.value = true
+  toast.message = 'Laporan Anda telah terkirim!'
+  toast.show = true
+  setTimeout(() => {
+    toast.show = false
+  }, 3000)
+
   form.description = ''
   form.location = ''
   attachedFiles.value = []

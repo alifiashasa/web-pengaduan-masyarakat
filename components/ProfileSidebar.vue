@@ -29,8 +29,8 @@
           :class="[
             'flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular transition-all',
             currentRoute === '/profile'
-              ? 'bg-[#F67011] text-white shadow-xs'
-              : 'text-gray-700 hover:bg-gray-50'
+              ? 'bg-[#F67011] text-white shadow-xs pointer-events-none'
+              : 'text-gray-700 hover:bg-gray-100 cursor-pointer'
           ]"
         >
           <img
@@ -46,8 +46,8 @@
           :class="[
             'flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular transition-all',
             currentRoute === '/profile/riwayat'
-              ? 'bg-[#F67011] text-white shadow-xs'
-              : 'text-gray-700 hover:bg-gray-50'
+              ? 'bg-[#F67011] text-white shadow-xs pointer-events-none'
+              : 'text-gray-700 hover:bg-gray-100 cursor-pointer'
           ]"
         >
           <img
@@ -60,8 +60,8 @@
 
         <button
           type="button"
-          class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular text-[#F67011] hover:bg-orange-50 transition-all w-full text-left cursor-pointer"
-          @click="handleLogout"
+          class="flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular hover:bg-orange-50 transition-all w-full text-left cursor-pointer"
+          @click="showLogoutDialog = true"
         >
           <img
             src="/images/icon-logout.svg"
@@ -73,20 +73,30 @@
       </nav>
     </div>
   </div>
+
+  <!-- Logout Confirmation Dialog -->
+  <LogoutConfirmModal
+    :isOpen="showLogoutDialog"
+    @close="showLogoutDialog = false"
+    @confirm="handleLogout"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuth } from '@/composables/useAuth';
+import LogoutConfirmModal from '@/components/modals/LogoutConfirmModal.vue';
 
 const route = useRoute();
 const router = useRouter();
 const { user, logout } = useAuth();
 
 const currentRoute = computed(() => route.path);
+const showLogoutDialog = ref(false);
 
 const handleLogout = () => {
+  showLogoutDialog.value = false;
   logout();
   router.push('/');
 };

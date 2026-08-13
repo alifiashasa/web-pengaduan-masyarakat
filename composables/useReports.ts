@@ -9,89 +9,176 @@ export interface CommentItem {
   date: string;
 }
 
+export interface ReportFile {
+  name: string;
+  size: string;
+  url?: string;
+}
+
 export interface ReportItem {
   id: number;
   title?: string;
   description: string;
   location?: string;
-  province: string;
-  city: string;
-  category: string;
+  province?: string;
+  city?: string;
+  category?: string;
   date: string;
-  status: 'pending' | 'proses' | 'selesai' | 'ditolak';
-  images: string[];
-  comments: CommentItem[];
+  status: 'terkirim' | 'pending' | 'proses' | 'diproses' | 'ditangani' | 'selesai' | 'dibatalkan' | 'ditolak';
+  images?: string[];
+  files?: ReportFile[];
+  hasExpand?: boolean;
+  comments?: CommentItem[];
 }
 
 export const useReports = () => {
   const reports = useState<ReportItem[]>('user_reports', () => [
     {
       id: 1,
-      title: 'Jalan Rusak dan Berlubang Parah',
-      description: 'Terdapat lubang cukup besar di dekat pertigaan jalan utama yang sangat membahayakan pengendara motor khususnya saat malam hari. Mohon perbaikan secepatnya.',
-      province: 'DI Yogyakarta',
-      city: 'Kota Yogyakarta',
-      category: 'Infrastruktur',
-      date: '07 Agt 2026, 10:15 WIB',
-      status: 'proses',
-      images: [
-        'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&q=80&w=400',
-        'https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&q=80&w=400',
-      ],
-      comments: [
-        {
-          id: 101,
-          author: 'Petugas Dinas Pekerjaan Umum',
-          role: 'Admin / Verifikator',
-          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100',
-          text: 'Laporan telah diverifikasi dan masuk dalam antrean penanganan tim perbaikan jalan wilayah Yogyakarta Kota.',
-          date: '07 Agt 2026, 11:30 WIB',
-        },
-      ],
+      title: 'Laporan Pengaduan 1',
+      description: 'Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.',
+      province: 'Jawa Tengah',
+      city: 'Kota Semarang',
+      location: 'Jl. Pemuda No.17, Kota Semarang',
+      category: 'Pengaduan',
+      date: 'Sen, 26/06/2025',
+      status: 'terkirim',
+      images: [],
+      files: [],
+      comments: [],
     },
     {
       id: 2,
-      title: 'Lampu Penerangan Jalan Umum Mati',
-      description: 'Lampu PJU sepanjang jalan utama mati total sejak 2 hari yang lalu, menyebabkan area jalan sangat gelap dan rawan kriminalitas.',
-      province: 'DI Yogyakarta',
-      city: 'Sleman',
-      category: 'Fasilitas Umum',
-      date: '05 Agt 2026, 19:40 WIB',
-      status: 'selesai',
-      images: [
-        'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&q=80&w=400',
-      ],
-      comments: [
+      title: 'Laporan Pengaduan 2',
+      description: 'Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.',
+      province: 'Jawa Tengah',
+      city: 'Kota Semarang',
+      location: 'Jl. Pemuda No.17, Kota Semarang',
+      category: 'Pengaduan',
+      date: 'Sen, 26/06/2025',
+      status: 'terkirim',
+      hasExpand: true,
+      files: [
         {
-          id: 102,
-          author: 'Petugas PJU Sleman',
-          role: 'Petugas Lapangan',
-          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100',
-          text: 'Perbaikan lampu dan pengantian bohlam PJU telah selesai dilaksanakan pada tanggal 06 Agustus 2026.',
-          date: '06 Agt 2026, 09:00 WIB',
+          name: 'File.pdf',
+          size: '5.3MB',
         },
       ],
+      images: [],
+      comments: [],
     },
     {
       id: 3,
-      title: 'Penumpukan Sampah Liar di Pinggir Jalan',
-      description: 'Terdapat tumpukan sampah liar yang menumpuk di pinggir jalan permukiman warga dan menimbulkan bau yang menyengat.',
-      province: 'DI Yogyakarta',
-      city: 'Bantul',
-      category: 'Kebersihan',
-      date: '01 Agt 2026, 08:20 WIB',
-      status: 'ditolak',
-      images: [],
-      comments: [
-        {
-          id: 103,
-          author: 'Dinas Lingkungan Hidup',
-          role: 'Admin / Verifikator',
-          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100',
-          text: 'Lokasi yang dilaporkan merupakan area privat perumahan. Harap berkoordinasi terlebih dahulu dengan pihak pengurus RT/RW setempat.',
-          date: '02 Agt 2026, 10:00 WIB',
-        },
+      title: 'Laporan Pengaduan 3',
+      description: 'Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.',
+      province: 'Jawa Tengah',
+      city: 'Kota Semarang',
+      location: 'Jl. Pemuda No.17, Kota Semarang',
+      category: 'Pengaduan',
+      date: 'Sen, 26/06/2025',
+      status: 'terkirim',
+      images: [
+        'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&q=80&w=200',
+        'https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&q=80&w=200',
+        'https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&q=80&w=200',
       ],
+      files: [],
+      comments: [],
+    },
+    {
+      id: 4,
+      title: 'Laporan Diproses',
+      description: 'Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+      province: 'Jawa Tengah',
+      city: 'Kota Semarang',
+      location: 'Jl. Pemuda No.17, Kota Semarang',
+      category: 'Kebersihan',
+      date: 'Rab, 28/06/2025',
+      status: 'diproses',
+      images: [],
+      files: [],
+      comments: [],
+    },
+    {
+      id: 5,
+      title: 'Laporan Ditangani',
+      description: 'Yorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+      province: 'Jawa Tengah',
+      city: 'Kota Semarang',
+      location: 'Jl. Pemuda No.17, Kota Semarang',
+      category: 'Fasilitas Umum',
+      date: 'Kam, 29/06/2025',
+      status: 'ditangani',
+      images: [],
+      files: [],
+      comments: [],
+    },
+    {
+      id: 6,
+      title: 'Laporan Selesai 1',
+      description: 'Laporan perbaikan lampu jalan di Jalan Pemuda telah selesai dikerjakan oleh Dinas Perhubungan. Lampu jalan sekarang sudah berfungsi kembali dengan normal dan menerangi jalan di malam hari.',
+      province: 'Jawa Tengah',
+      city: 'Kota Semarang',
+      location: 'Jl. Pemuda No.17, Kota Semarang',
+      category: 'Fasilitas Umum',
+      date: 'Kam, 30/06/2025',
+      status: 'selesai',
+      images: [
+        'https://images.unsplash.com/photo-1509395062183-67c5ad6faff9?auto=format&fit=crop&q=80&w=200'
+      ],
+      files: [],
+      comments: [],
+    },
+    {
+      id: 7,
+      title: 'Laporan Selesai 2',
+      description: 'Laporan mengenai tumpukan sampah liar di area bahu jalan utama telah selesai ditindaklanjuti. Petugas kebersihan dinas lingkungan hidup telah mengangkut seluruh tumpukan sampah dan membersihkan sisa-sisa kotoran yang tertinggal. Selain itu, pihak kelurahan juga telah memasang papan larangan membuang sampah sembarangan serta menempatkan tempat sampah besar di sekitar lokasi agar warga tidak membuang sampah sembarangan lagi. Terima kasih atas partisipasi aktif masyarakat dalam melaporkan hal ini.',
+      province: 'Jawa Tengah',
+      city: 'Kota Semarang',
+      location: 'Jl. Pemuda No.17, Kota Semarang',
+      category: 'Kebersihan',
+      date: 'Jum, 01/07/2025',
+      status: 'selesai',
+      hasExpand: true,
+      images: [],
+      files: [
+        {
+          name: 'Laporan_Selesai_Perbaikan.pdf',
+          size: '1.2MB'
+        }
+      ],
+      comments: [],
+    },
+    {
+      id: 8,
+      title: 'Laporan Dibatalkan 1',
+      description: 'Laporan mengenai kebocoran pipa air PDAM dibatalkan karena pelapor mengajukan pembatalan secara mandiri. Setelah dikonfirmasi, ternyata pipa yang bocor berada di dalam area pekarangan rumah pribadi warga dan telah ditangani secara mandiri oleh pemilik rumah tersebut dengan bantuan teknisi swasta setempat. Terima kasih atas kesediaan Anda melaporkan.',
+      province: 'Jawa Tengah',
+      city: 'Kota Semarang',
+      location: 'Jl. Pemuda No.17, Kota Semarang',
+      category: 'Fasilitas Umum',
+      date: 'Sab, 02/07/2025',
+      status: 'dibatalkan',
+      hasExpand: true,
+      images: [],
+      files: [],
+      comments: [],
+    },
+    {
+      id: 9,
+      title: 'Laporan Dibatalkan 2',
+      description: 'Pengaduan pohon tumbang dibatalkan karena tidak ada detail lokasi yang jelas.',
+      province: 'Jawa Tengah',
+      city: 'Kota Semarang',
+      location: 'Jl. Pemuda No.17, Kota Semarang',
+      category: 'Kebencanaan',
+      date: 'Min, 03/07/2025',
+      status: 'dibatalkan',
+      images: [
+        'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=200'
+      ],
+      files: [],
+      comments: [],
     },
   ]);
 
@@ -99,14 +186,8 @@ export const useReports = () => {
     const report: ReportItem = {
       ...newReport,
       id: Date.now(),
-      date: new Date().toLocaleDateString('id-ID', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }) + ' WIB',
-      status: 'pending',
+      date: 'Sen, 26/06/2025',
+      status: 'terkirim',
       comments: [],
     };
     reports.value = [report, ...reports.value];

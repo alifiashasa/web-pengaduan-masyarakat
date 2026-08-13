@@ -22,12 +22,12 @@
           <a href="#tentang" class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase">
             TENTANG KAMI
           </a>
-          <a href="#faq" class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase">
+          <NuxtLink to="/faq" class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase">
             FAQ
-          </a>
-          <a href="#kontak" class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase">
+          </NuxtLink>
+          <NuxtLink to="/kontak" class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase">
             KONTAK
-          </a>
+          </NuxtLink>
           <span class="text-[14px] text-[#EOEOEO] font-medium ml-4">
             © 2025 MUM. All rights reserved.
           </span>

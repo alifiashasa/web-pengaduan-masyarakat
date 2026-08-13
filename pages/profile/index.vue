@@ -1,33 +1,33 @@
 <template>
-  <div class="p-4 sm:p-6 lg:p-8 bg-[#F3F4F6] min-h-screen w-full flex-1 flex flex-col justify-start">
-    <div class="flex flex-col lg:flex-row gap-[20px] items-start w-full">
+  <div class="p-4 sm:p-4 lg:p-4 bg-[#F3F4F6] min-h-screen lg:h-full w-full flex-1 flex flex-col justify-start lg:overflow-hidden">
+    <div class="flex flex-col lg:flex-row gap-4 items-start w-full lg:h-full lg:overflow-hidden">
       <!-- Sidebar -->
-      <div class="w-full lg:w-[308px] shrink-0">
+      <div class="w-full lg:w-[308px] shrink-0 lg:h-full lg:overflow-hidden lg:rounded-[20px]">
         <ProfileSidebar />
       </div>
 
       <!-- Main Content Column -->
-      <div class="flex-1 min-w-0 space-y-[20px]">
+      <div class="flex-1 min-w-0 space-y-4">
           <!-- Header Nav (Next to Sidebar) -->
-          <nav class="w-full h-[80px] bg-white rounded-2xl border border-gray-100 px-6 shadow-sm flex items-center justify-between gap-[10px]">
+          <nav class="w-full h-[80px] bg-white rounded-2xl border border-gray-100 px-16 shadow-sm flex items-center justify-between gap-[10px]">
             <!-- Breadcrumb -->
             <div class="flex items-center gap-2 text-sm">
-              <NuxtLink to="/" class="text-gray-500 hover:text-gray-900 transition-colors">Home</NuxtLink>
+              <NuxtLink to="/" class="text-[#757575] hover:text-gray-900 transition-colors">Home</NuxtLink>
               <span class="text-gray-400">></span>
               <span class="font-semibold text-gray-900">Profil</span>
             </div>
 
             <!-- Header Nav Links & User Info -->
             <div class="flex flex-wrap items-center gap-5 sm:gap-6 text-sm">
-              <a href="#tentang" class="text-gray-600 hover:text-gray-900 transition-colors font-medium">Tentang Kami</a>
-              <a href="#faq" class="text-gray-600 hover:text-gray-900 transition-colors font-medium">FAQ</a>
-              <a href="#kontak" class="text-gray-600 hover:text-gray-900 transition-colors font-medium">Kontak</a>
+              <a href="#tentang" class="text-[#757575] hover:text-gray-900 transition-colors font-medium">Tentang Kami</a>
+              <a href="#faq" class="text-[#757575] hover:text-gray-900 transition-colors font-medium">FAQ</a>
+              <a href="#kontak" class="text-[#757575] hover:text-gray-900 transition-colors font-medium">Kontak</a>
               <NuxtLink to="/replication-request" class="font-medium text-[#0A0A0A] hover:text-[#F67011] transition-colors">
                 Replication Request
               </NuxtLink>
               <div class="flex items-center gap-2 pl-2">
                 <img :src="user.avatarUrl" :alt="user.name" class="w-8 h-8 rounded-full object-cover border border-gray-200" />
-                <span class="font-semibold text-gray-700 text-xs sm:text-sm">{{ user.email }}</span>
+                <span class="font-medium text-[#757575] text-xs sm:text-sm">{{ user.email }}</span>
               </div>
             </div>
           </nav>
@@ -136,6 +136,8 @@ import ProfileSidebar from '@/components/ProfileSidebar.vue';
 import EditProfileModal from '@/components/modals/EditProfileModal.vue';
 import ToastNotification from '@/components/ToastNotification.vue';
 import { useAuth } from '@/composables/useAuth';
+
+definePageMeta({ layout: 'profile' });
 
 const { user, updateProfile } = useAuth();
 

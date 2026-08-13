@@ -29,18 +29,24 @@
           >
             Tentang Kami
           </a>
-          <a
-            href="#faq"
-            class="text-[15px] font-medium text-[#757575] hover:text-[#0A0A0A] transition-colors"
+          <NuxtLink
+            to="/faq"
+            :class="[
+              'text-[15px] font-medium transition-colors',
+              route.path === '/faq' ? 'text-[#E75A0F]' : 'text-[#757575] hover:text-[#0A0A0A]'
+            ]"
           >
             FAQ
-          </a>
-          <a
-            href="#kontak"
-            class="text-[15px] font-medium text-[#757575] hover:text-[#0A0A0A] transition-colors"
+          </NuxtLink>
+          <NuxtLink
+            to="/kontak"
+            :class="[
+              'text-[15px] font-medium transition-colors',
+              route.path === '/kontak' ? 'text-[#E75A0F]' : 'text-[#757575] hover:text-[#0A0A0A]'
+            ]"
           >
             Kontak
-          </a>
+          </NuxtLink>
         </nav>
       </div>
 
@@ -50,7 +56,10 @@
         <template v-if="!isLoggedIn">
           <NuxtLink
             to="/replication-request"
-            class="text-[15px] font-medium text-[#0A0A0A] hover:text-[#E75A0F] transition-colors"
+            :class="[
+              'text-[15px] font-medium transition-colors',
+              route.path === '/replication-request' ? 'text-[#F67011] font-semibold' : 'text-[#0A0A0A] hover:text-[#E75A0F]'
+            ]"
           >
             Replication Request
           </NuxtLink>
@@ -67,7 +76,10 @@
         <template v-else>
           <NuxtLink
             to="/replication-request"
-            class="text-[15px] font-medium text-[#0A0A0A] hover:text-[#E75A0F] transition-colors"
+            :class="[
+              'text-[15px] font-medium transition-colors',
+              route.path === '/replication-request' ? 'text-[#F67011] font-semibold' : 'text-[#0A0A0A] hover:text-[#E75A0F]'
+            ]"
           >
             Replication Request
           </NuxtLink>
@@ -99,8 +111,8 @@
                 :class="[
                   'flex items-center gap-3 px-3.5 py-2.5 rounded-[14px] text-[15px] font-medium transition-all',
                   route.path === '/profile'
-                    ? 'bg-[#E75A0F] text-white'
-                    : 'bg-[#F5F5F5] text-[#0A0A0A] hover:bg-[#EAEAEA]'
+                    ? 'bg-[#F67011] text-white'
+                    : 'bg-transparent text-[#0A0A0A] hover:bg-[#EDEDED]'
                 ]"
                 @click="showProfileDropdown = false"
               >
@@ -118,8 +130,8 @@
                 :class="[
                   'flex items-center gap-3 px-3.5 py-2.5 rounded-[14px] text-[15px] font-medium transition-all',
                   route.path === '/profile/riwayat'
-                    ? 'bg-[#E75A0F] text-white'
-                    : 'bg-[#F5F5F5] text-[#0A0A0A] hover:bg-[#EAEAEA]'
+                    ? 'bg-[#F67011] text-white'
+                    : 'bg-transparent text-[#0A0A0A] hover:bg-[#EDEDED]'
                 ]"
                 @click="showProfileDropdown = false"
               >
@@ -134,8 +146,8 @@
 
               <button
                 type="button"
-                class="flex items-center gap-3 px-3.5 py-2.5 rounded-[14px] text-[15px] font-medium text-[#0A0A0A] hover:bg-[#F5F5F5] transition-all w-full text-left"
-                @click="handleLogout"
+                class="flex items-center gap-3 px-3.5 py-2.5 rounded-[14px] text-[15px] font-medium text-[#0A0A0A] bg-transparent hover:bg-[#EDEDED] transition-all w-full text-left"
+                @click="showLogoutDialog = true; showProfileDropdown = false"
               >
                 <!-- Logout Icon (icon-logout.svg) -->
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="w-5 h-5 shrink-0">
@@ -189,23 +201,32 @@
           >
             Tentang Kami
           </a>
-          <a
-            href="#faq"
-            class="text-sm font-medium text-gray-700 hover:text-[#E75A0F]"
+          <NuxtLink
+            to="/faq"
+            :class="[
+              'text-sm font-medium transition-colors',
+              route.path === '/faq' ? 'text-[#E75A0F]' : 'text-gray-700 hover:text-[#E75A0F]'
+            ]"
             @click="showMobileMenu = false"
           >
             FAQ
-          </a>
-          <a
-            href="#kontak"
-            class="text-sm font-medium text-gray-700 hover:text-[#E75A0F]"
+          </NuxtLink>
+          <NuxtLink
+            to="/kontak"
+            :class="[
+              'text-sm font-medium transition-colors',
+              route.path === '/kontak' ? 'text-[#E75A0F]' : 'text-gray-700 hover:text-[#E75A0F]'
+            ]"
             @click="showMobileMenu = false"
           >
             Kontak
-          </a>
+          </NuxtLink>
           <NuxtLink
             to="/replication-request"
-            class="text-sm font-medium text-gray-700 hover:text-[#E75A0F]"
+            :class="[
+              'text-sm font-medium transition-colors',
+              route.path === '/replication-request' ? 'text-[#F67011] font-semibold' : 'text-gray-700 hover:text-[#E75A0F]'
+            ]"
             @click="showMobileMenu = false"
           >
             Replication Request
@@ -240,19 +261,27 @@
               <NuxtLink to="/profile/riwayat" @click="showMobileMenu = false">
                 <AppButton variant="secondary" fullWidth size="sm">Riwayat Pengaduan</AppButton>
               </NuxtLink>
-              <AppButton variant="danger" fullWidth size="sm" @click="handleLogout">Keluar</AppButton>
+              <AppButton variant="danger" fullWidth size="sm" @click="showLogoutDialog = true; showMobileMenu = false">Keluar</AppButton>
             </div>
           </template>
         </div>
       </div>
     </Transition>
   </header>
+
+  <!-- Logout Confirmation Dialog -->
+  <LogoutConfirmModal
+    :isOpen="showLogoutDialog"
+    @close="showLogoutDialog = false"
+    @confirm="handleLogout"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuth } from '@/composables/useAuth';
+import LogoutConfirmModal from '@/components/modals/LogoutConfirmModal.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -260,8 +289,10 @@ const { isLoggedIn, user, logout } = useAuth();
 
 const showMobileMenu = ref(false);
 const showProfileDropdown = ref(false);
+const showLogoutDialog = ref(false);
 
 const handleLogout = () => {
+  showLogoutDialog.value = false;
   showProfileDropdown.value = false;
   showMobileMenu.value = false;
   logout();

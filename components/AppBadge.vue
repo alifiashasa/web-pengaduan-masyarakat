@@ -1,11 +1,10 @@
 <template>
   <span
     :class="[
-      'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border',
+      'h-[30px] inline-flex items-center justify-center px-3.5 rounded-full text-sm font-medium shadow-2xs whitespace-nowrap',
       statusConfig.classes
     ]"
   >
-    <span :class="['w-1.5 h-1.5 rounded-full', statusConfig.dot]"></span>
     {{ statusConfig.label }}
   </span>
 </template>
@@ -13,7 +12,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-type StatusType = 'pending' | 'proses' | 'selesai' | 'ditolak';
+type StatusType = 'terkirim' | 'pending' | 'proses' | 'diproses' | 'ditangani' | 'selesai' | 'dibatalkan' | 'ditolak';
 
 const props = defineProps<{
   status: StatusType;
@@ -21,35 +20,38 @@ const props = defineProps<{
 
 const statusConfig = computed(() => {
   switch (props.status) {
+    case 'terkirim':
     case 'pending':
       return {
-        label: 'Menunggu Verifikasi',
-        classes: 'bg-amber-50 text-amber-700 border-amber-200',
-        dot: 'bg-amber-500',
+        label: 'Terkirim',
+        classes: 'bg-[#F67011] text-white',
       };
+    case 'diproses':
     case 'proses':
       return {
-        label: 'Dalam Proses',
-        classes: 'bg-blue-50 text-blue-700 border-blue-200',
-        dot: 'bg-blue-500',
+        label: 'Diproses',
+        classes: 'bg-[#298FF4] text-white',
+      };
+    case 'ditangani':
+      return {
+        label: 'Ditangani',
+        classes: 'bg-[#14B97F] text-white',
       };
     case 'selesai':
       return {
         label: 'Selesai',
-        classes: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-        dot: 'bg-emerald-500',
+        classes: 'bg-[#18171C] text-white',
       };
+    case 'dibatalkan':
     case 'ditolak':
       return {
-        label: 'Ditolak',
-        classes: 'bg-red-50 text-red-700 border-red-200',
-        dot: 'bg-red-500',
+        label: 'Dibatalkan',
+        classes: 'bg-[#F5F5F5] text-[#757575]',
       };
     default:
       return {
-        label: 'Menunggu',
-        classes: 'bg-gray-50 text-gray-700 border-gray-200',
-        dot: 'bg-gray-400',
+        label: 'Terkirim',
+        classes: 'bg-[#F67011] text-white',
       };
   }
 });

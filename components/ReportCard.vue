@@ -1,83 +1,148 @@
 <template>
-  <div class="bg-white rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-card hover:shadow-md transition-shadow">
+  <div class="bg-white rounded-[20px] border border-[#EDEDED] p-5 sm:p-6 shadow-2xs hover:shadow-xs transition-shadow space-y-4">
     <!-- Header: Date & Status -->
-    <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-      <div class="flex items-center gap-2 text-xs text-gray-500">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    <div class="flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2 text-xs sm:text-sm text-[#757575] font-normal">
+        <svg class="w-4 h-4 text-[#757575] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
         </svg>
         <span>{{ report.date }}</span>
       </div>
       <AppBadge :status="report.status" />
     </div>
 
-    <!-- Title & Location -->
-    <h3 class="text-base sm:text-lg font-bold text-gray-900 mb-1">
-      {{ report.title || 'Laporan Pengaduan' }}
-    </h3>
-    
-    <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
-      <span v-if="report.category" class="font-medium text-brand-orange bg-brand-orange-light px-2.5 py-0.5 rounded-md">
-        {{ report.category }}
-      </span>
-      <span v-if="report.category">•</span>
-      <span>{{ report.location || [report.province, report.city].filter(Boolean).join(', ') || 'Lokasi tidak ditentukan' }}</span>
-    </div>
-
     <!-- Description -->
-    <p class="text-xs sm:text-sm text-gray-600 line-clamp-2 leading-relaxed mb-4">
-      {{ report.description }}
-    </p>
+    <p
+      ref="descRef"
+      :class="[
+        'text-xs sm:text-sm text-gray-700 leading-relaxed font-normal',
+        isExpanded ? '' : 'line-clamp-2'
+      ]"
+    >{{ report.description }}</p>
 
-    <!-- Attachments preview -->
-    <div v-if="report.images && report.images.length > 0" class="flex gap-2 mb-4 overflow-x-auto pb-1">
-      <template v-for="(img, idx) in report.images" :key="idx">
-        <div
-          v-if="img.startsWith('data:application/pdf') || img.toLowerCase().includes('.pdf')"
-          class="flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-700 flex-shrink-0 h-16 sm:h-20"
-        >
-          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-red-100 text-red-600 font-bold text-[10px]">
-            PDF
-          </div>
-          <span class="font-medium text-gray-600 text-xs">Dokumen PDF</span>
-        </div>
-        <img
-          v-else
-          :src="img"
-          alt="Foto Laporan"
-          class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl border border-gray-100 flex-shrink-0"
-        />
-      </template>
-    </div>
-
-    <!-- Footer Actions -->
-    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+    <!-- Expand Toggle — hanya muncul jika deskripsi benar-benar overflow 2 baris -->
+    <div v-if="isOverflowing" class="pt-0.5">
       <button
         type="button"
-        class="text-xs font-semibold text-red-600 hover:text-red-700 flex items-center gap-1.5 transition-colors focus:outline-none"
+        class="text-[#F67011] text-xs sm:text-sm font-medium inline-flex items-center gap-1 hover:underline cursor-pointer focus:outline-none"
+        @click="isExpanded = !isExpanded"
+      >
+        <span>{{ isExpanded ? 'Lebih Sedikit' : 'Lihat Selengkapnya' }}</span>
+        <svg
+          class="w-4 h-4 transition-transform duration-200"
+          :class="{ 'rotate-180': isExpanded }"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <!-- File Box (PDF) — selalu tampil, tidak tergantung isExpanded -->
+    <div
+      v-if="report.files && report.files.length"
+      class="bg-[#F8F9FA] border border-gray-100 rounded-xl p-2.5 px-3.5 flex items-center gap-3 w-fit max-w-[240px] shadow-2xs"
+    >
+      <div class="w-8 h-9 bg-[#E53935] rounded-md flex flex-col items-center justify-center shrink-0 shadow-2xs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+      </div>
+      <div class="flex flex-col text-left overflow-hidden">
+        <span class="text-xs font-bold text-gray-800 truncate">{{ report.files[0].name }}</span>
+        <span class="text-[10px] text-gray-400 leading-tight mt-0.5">{{ report.files[0].size }}</span>
+      </div>
+    </div>
+
+    <!-- Image Thumbnails Gallery -->
+    <div v-if="report.images && report.images.length > 0" class="flex items-center gap-2.5 pt-1 overflow-x-auto pb-1">
+      <img
+        v-for="(img, idx) in report.images"
+        :key="idx"
+        :src="img"
+        alt="Foto Laporan"
+        class="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-xl border border-gray-200/80 shadow-2xs shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
+        @click="$emit('view-detail', report)"
+      />
+    </div>
+
+    <!-- Footer: Location & Cancel Action -->
+    <div class="pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-1.5 text-xs sm:text-sm text-[#757575] font-normal min-w-0">
+        <svg class="w-4 h-4 shrink-0 text-[#757575]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        <span class="truncate">{{ report.location || [report.province, report.city].filter(Boolean).join(', ') || 'Jl. Pemuda No.17, Kota Semarang' }}</span>
+      </div>
+
+      <button
+        type="button"
+        :class="[
+          'px-5 py-2 border border-[#EOEOEO] text-xs sm:text-sm font-medium rounded-full transition-colors shrink-0 focus:outline-none',
+          (report.status === 'dibatalkan' || report.status === 'ditolak' || report.status === 'selesai')
+            ? 'text-[#757575] cursor-not-allowed bg-transparent'
+            : 'text-[#FF5B4E] hover:bg-red-50 cursor-pointer'
+        ]"
+        :disabled="report.status === 'dibatalkan' || report.status === 'ditolak' || report.status === 'selesai'"
         @click="$emit('delete', report.id)"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-        </svg>
-        Hapus
+        Batalkan Laporan
       </button>
-
-      <AppButton variant="secondary" size="sm" @click="$emit('view-detail', report)">
-        Detail Laporan
-      </AppButton>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, nextTick } from 'vue';
 import AppBadge from './AppBadge.vue';
-import AppButton from './AppButton.vue';
 import type { ReportItem } from '@/composables/useReports';
 
-defineProps<{
+const props = defineProps<{
   report: ReportItem;
 }>();
 
 defineEmits(['view-detail', 'delete']);
+
+const isExpanded = ref(false);
+const isOverflowing = ref(false);
+const descRef = ref<HTMLParagraphElement | null>(null);
+
+onMounted(async () => {
+  await nextTick();
+  detectOverflow();
+});
+
+/**
+ * Deteksi apakah teks deskripsi benar-benar melebihi 2 baris secara aktual.
+ * Ukur tinggi elemen saat line-clamp-2 aktif, lalu bandingkan dengan tinggi penuh
+ * setelah clamp dilepas sementara. Ini satu-satunya cara yang akurat — bukan karakter.
+ */
+const detectOverflow = () => {
+  const el = descRef.value;
+  if (!el) return;
+
+  // Ukur tinggi saat line-clamp-2 aktif
+  const clampedHeight = el.clientHeight;
+
+  // Lepas sementara clamp untuk mengukur tinggi penuh
+  el.style.webkitLineClamp = 'unset';
+  el.style.overflow = 'visible';
+  el.style.display = 'block';
+  const fullHeight = el.scrollHeight;
+
+  // Kembalikan ke state semula (Tailwind class akan kembali aktif)
+  el.style.webkitLineClamp = '';
+  el.style.overflow = '';
+  el.style.display = '';
+
+  // Toleransi 4px untuk menghindari false positive akibat rounding pixel
+  isOverflowing.value = fullHeight > clampedHeight + 4;
+};
 </script>
