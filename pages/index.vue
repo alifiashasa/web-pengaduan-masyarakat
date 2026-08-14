@@ -303,26 +303,33 @@
     <!-- Testimoni Warga -->
     <section class="mt-[88px] overflow-hidden pb-[40px]">
       <div class="ml-auto w-[calc(100%-max(16px,calc((100vw-1216px)/2)))]">
-        <div class="flex w-max gap-[21px]">
-          <article
-            v-for="testimonial in testimonials"
-            :key="testimonial.author"
-            class="flex h-[334px] w-[336.6px] shrink-0 flex-col rounded-[20px] bg-[#F5F5F5] px-[20px] pb-[18px] pt-[24px]"
+        <div class="flex w-max marquee-track">
+          <div
+            v-for="groupIndex in 4"
+            :key="groupIndex"
+            class="flex gap-[21px] pr-[21px] marquee-group"
+            :aria-hidden="groupIndex > 1 ? 'true' : undefined"
           >
-            <img
-              src="/assets/icons/tanda-kutip.svg"
-              alt="Tanda Kutip"
-              class="h-[72px] w-[68px] shrink-0 object-contain object-left"
-            />
+            <article
+              v-for="(testimonial, index) in testimonials"
+              :key="testimonial.author + '-' + groupIndex + '-' + index"
+              class="flex h-[334px] w-[336.6px] shrink-0 flex-col rounded-[20px] bg-[#F5F5F5] px-[20px] pb-[18px] pt-[24px]"
+            >
+              <img
+                src="/assets/icons/tanda-kutip.svg"
+                alt="Tanda Kutip"
+                class="h-[72px] w-[68px] shrink-0 object-contain object-left"
+              />
 
-            <p class="mt-4 text-[19px] leading-[25px] text-[#171717]">
-              {{ testimonial.text }}
-            </p>
+              <p class="mt-4 text-[19px] leading-[25px] text-[#171717]">
+                {{ testimonial.text }}
+              </p>
 
-            <p class="mt-auto text-[14px] text-[#757575]">
-              {{ testimonial.author }}
-            </p>
-          </article>
+              <p class="mt-auto text-[14px] text-[#757575]">
+                {{ testimonial.author }}
+              </p>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -532,5 +539,31 @@ const processReportSubmission = () => {
   background-size: cover;
   background-position: center -85px;
   background-repeat: no-repeat;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+}
+
+.marquee-group {
+  flex-shrink: 0;
+  display: flex;
+  gap: 21px;
+  padding-right: 21px;
+  animation: scroll-left 30s linear infinite;
+}
+
+.marquee-track:hover .marquee-group {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 </style>
