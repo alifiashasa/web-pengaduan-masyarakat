@@ -6,9 +6,9 @@
     <main class="flex-1 flex flex-col items-center justify-center py-12 md:py-16 px-4 text-center">
       <div class="flex flex-col items-center max-w-[600px] mx-auto">
         <img
-          src="/assets/illustrations/404-error.webp"
+          src="/assets/illustrations/404-error.svg"
           alt="404 Error"
-          class="w-[320px] h-[320px] object-contain mb-8 md:mb-4 select-none"
+          class="w-[320px] h-auto object-contain mb-8 md:mb-4 select-none"
         />
 
         <h1
