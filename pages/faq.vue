@@ -1,41 +1,117 @@
 <template>
   <div class="bg-[#FEFFFF] min-h-screen">
     <!-- ========== HERO SECTION ========== -->
-    <section class="pt-[60px] pb-[48px] text-center">
+    <section class="pt-8 sm:pt-[60px] pb-6 sm:pb-[48px] text-center">
       <div class="mx-auto w-full max-w-[1216px] px-4 sm:px-6 lg:px-0">
-        <!-- Small icon above heading -->
-        <div class="flex justify-center mb-4">
-          <img src="/assets/icons/icon-chat-question.svg" alt="FAQ Icon" width="44" height="44" />
+        <!-- Icon -->
+        <div class="flex justify-center mb-3 sm:mb-4">
+          <img
+            src="/assets/icons/icon-chat-question.svg"
+            alt="FAQ Icon"
+            class="w-9 h-9 sm:w-11 sm:h-11"
+          />
         </div>
 
         <!-- Heading -->
         <h1
-          class="font-urbanist text-[36px] sm:text-[48px] font-semibold leading-[1.2] tracking-[-0.5px] text-[#0A0A0A]"
+          class="font-urbanist text-[24px] sm:text-[36px] lg:text-[48px] font-semibold leading-[1.25] tracking-[-0.5px] text-[#0A0A0A]"
         >
           Ada yang Bisa Kami Bantu?
         </h1>
 
         <!-- Subtitle -->
-        <p class="mt-4 mx-auto max-w-[1000px] text-[20px] leading-[1.7] text-[#0A0A0ACC]">
+        <p
+          class="mt-3 sm:mt-4 mx-auto max-w-[640px] sm:max-w-[1000px] text-[14px] sm:text-[18px] lg:text-[20px] leading-relaxed lg:leading-[1.7] text-[#0A0A0ACC]"
+        >
           Temukan jawaban cepat seputar cara melapor, menyampaikan aspirasi, dan bagaimana Vide
           bekerja untuk menghubungkan suaramu.
         </p>
 
+        <!-- Search Bar -->
+        <div class="mt-6 sm:mt-8 mx-auto max-w-[560px] px-2">
+          <div class="relative flex items-center">
+            <span class="absolute left-4 text-[#A0A0A0]">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M22 22L20 20"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Cari pertanyaan atau kata kunci..."
+              class="w-full pl-11 pr-10 py-3 rounded-full border border-[#E5E5E5] bg-white text-sm text-[#0A0A0A] placeholder-[#A0A0A0] focus:outline-none focus:border-[#E75A0F] focus:ring-2 focus:ring-[#E75A0F]/20 transition-all shadow-sm"
+            />
+            <button
+              v-if="searchQuery"
+              type="button"
+              class="absolute right-4 text-[#A0A0A0] hover:text-[#0A0A0A] transition-colors"
+              @click="searchQuery = ''"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 6L6 18M6 6L18 18"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
         <!-- ========== CATEGORY TABS ========== -->
-        <div class="mt-8 flex flex-wrap justify-center gap-2">
+        <div v-if="categories.length > 0" class="mt-6 sm:mt-8 flex flex-wrap justify-center gap-1.5 sm:gap-2 px-1 sm:px-2">
           <button
-            v-for="cat in categories"
-            :key="cat.key"
             type="button"
-            class="rounded-full px-4 py-1.5 text-[13.5px] font-medium transition-colors duration-150 focus:outline-none"
+            class="rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 text-[13.5px] font-medium transition-all duration-150 focus:outline-none"
             :class="
-              activeCategory === cat.key
-                ? 'bg-[#E75A0F] text-white'
+              activeCategory === 'all'
+                ? 'bg-[#E75A0F] text-white shadow-sm'
                 : 'bg-[#FFF7ED] text-[#E75A0F] hover:bg-[#FFE8D6]'
             "
-            @click="activeCategory = cat.key"
+            @click="selectCategory('all')"
           >
-            {{ cat.label }}
+            Semua
+          </button>
+          <button
+            v-for="cat in categories"
+            :key="cat.id"
+            type="button"
+            class="rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 text-[13.5px] font-medium transition-all duration-150 focus:outline-none"
+            :class="
+              activeCategory === cat.slug
+                ? 'bg-[#E75A0F] text-white shadow-sm'
+                : 'bg-[#FFF7ED] text-[#E75A0F] hover:bg-[#FFE8D6]'
+            "
+            @click="selectCategory(cat.slug)"
+          >
+            {{ cat.name }}
           </button>
         </div>
       </div>
@@ -44,18 +120,97 @@
     <!-- ========== FAQ ACCORDION SECTION ========== -->
     <section class="pb-[80px]">
       <div class="mx-auto w-full max-w-[1216px] px-4 sm:px-6 lg:px-0">
-        <!-- FAQ list container -->
         <div class="mx-auto max-w-[920px]">
-          <FaqAccordionItem
-            :first="index === 0"
-            v-for="(item, index) in currentFaqs"
-            :key="item.id"
-            :question="item.question"
-            :answer="item.answer"
-            :default-open="index === 0"
-          />
-          <!-- Bottom divider -->
-          <div class="border-t border-[#EDEDED]" />
+          <!-- Loading State Skeleton -->
+          <div v-if="loading" class="space-y-4 py-6">
+            <div
+              v-for="n in 4"
+              :key="n"
+              class="animate-pulse p-4 rounded-xl border border-[#EDEDED] space-y-3"
+            >
+              <div class="h-5 bg-gray-200 rounded w-3/4"></div>
+              <div class="h-4 bg-gray-100 rounded w-full"></div>
+            </div>
+          </div>
+
+          <!-- Error Alert State -->
+          <div
+            v-else-if="error"
+            class="text-center py-12 px-4 rounded-2xl bg-red-50 border border-red-100 my-4"
+          >
+            <svg
+              class="mx-auto h-10 w-10 text-red-500 mb-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            <p class="text-red-700 font-medium mb-4">{{ error }}</p>
+            <button
+              type="button"
+              class="px-5 py-2.5 rounded-full bg-[#E75A0F] text-white text-sm font-medium hover:bg-[#d44f0b] transition-colors shadow-sm"
+              @click="loadData"
+            >
+              Coba Lagi
+            </button>
+          </div>
+
+          <!-- Empty State -->
+          <div v-else-if="filteredFaqs.length === 0" class="text-center py-16 px-4">
+            <div class="flex justify-center mb-4">
+              <div
+                class="w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center text-[#E75A0F]"
+              >
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-[#0A0A0A] mb-1">Pertanyaan Tidak Ditemukan</h3>
+            <p class="text-sm text-[#757575] max-w-md mx-auto">
+              Tidak ada pertanyaan yang sesuai dengan kategori atau kata kunci pencarian Anda.
+            </p>
+            <button
+              v-if="searchQuery || activeCategory !== 'all'"
+              type="button"
+              class="mt-4 px-4 py-2 rounded-full border border-[#E75A0F] text-[#E75A0F] text-xs font-medium hover:bg-[#FFF7ED] transition-colors"
+              @click="resetFilters"
+            >
+              Reset Filter
+            </button>
+          </div>
+
+          <!-- FAQ Accordion List -->
+          <div v-else class="transition-all duration-200">
+            <FaqAccordionItem
+              v-for="(item, index) in filteredFaqs"
+              :key="item.id"
+              :first="index === 0"
+              :question="item.question"
+              :answer="item.answer"
+              :default-open="index === 0"
+            />
+            <!-- Bottom divider -->
+            <div class="border-t border-[#EDEDED]" />
+          </div>
         </div>
       </div>
     </section>
@@ -63,10 +218,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { useFaqStore } from '@/stores/faq';
+import type { FaqItem } from '@/stores/faq';
 
 useHead({
-  title: 'FAQ \u2013 Ada yang Bisa Kami Bantu? | Vide',
+  title: 'FAQ – Ada yang Bisa Kami Bantu? | Vide',
   meta: [
     {
       name: 'description',
@@ -76,141 +233,66 @@ useHead({
   ],
 });
 
-// \u2500\u2500\u2500 Category tabs \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-const categories = [
-  { key: 'general', label: 'General' },
-  { key: 'reporting', label: 'Reporting Guide' },
-  { key: 'aspirations', label: 'Aspirations' },
-  { key: 'tracking', label: 'Tracking & Follow-up' },
-  { key: 'privacy', label: 'Privacy & Security' },
-  { key: 'account', label: 'Account Management' },
-];
+const faqStore = useFaqStore();
 
-const activeCategory = ref('general');
+const activeCategory = ref<string>('all');
+const searchQuery = ref<string>('');
 
-// \u2500\u2500\u2500 FAQ data per category \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-interface FaqItem {
-  id: string;
-  question: string;
-  answer: string;
+const categories = computed(() => faqStore.categories);
+const loading = computed(() => faqStore.loading);
+const error = computed(() => faqStore.error);
+
+// Combined filter for category & search text
+const filteredFaqs = computed<FaqItem[]>(() => {
+  let list = faqStore.faqs;
+
+  // Filter by category if not 'all'
+  if (activeCategory.value !== 'all') {
+    list = list.filter((item) => {
+      const catSlug = item.category?.slug;
+      if (catSlug) {
+        return catSlug === activeCategory.value;
+      }
+      return true;
+    });
+  }
+
+  // Filter by search query
+  if (searchQuery.value.trim()) {
+    const q = searchQuery.value.toLowerCase().trim();
+    list = list.filter(
+      (item) => item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q)
+    );
+  }
+
+  return list;
+});
+
+async function selectCategory(slug: string) {
+  activeCategory.value = slug;
+  if (slug === 'all') {
+    await faqStore.fetchFaqs();
+  } else {
+    // Call category-specific endpoint or filter
+    const res = await faqStore.fetchFaqsByCategorySlug(slug);
+    if (!res || !res.success) {
+      // Fallback to query parameter endpoint if category slug endpoint didn't return
+      await faqStore.fetchFaqs(slug);
+    }
+  }
 }
 
-const faqData: Record<string, FaqItem[]> = {
-  general: [
-    {
-      id: 'g1',
-      question: 'What is the difference between a copyright and a trademark?',
-      answer:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-    {
-      id: 'g2',
-      question: 'How does the internet work?',
-      answer:
-        'The internet is a global network of computers connected together using standardized communication protocols. Data is broken into packets, transmitted across various routes, and reassembled at the destination. It relies on technologies like TCP/IP, DNS, and HTTP to enable communication between billions of devices worldwide.',
-    },
-    {
-      id: 'g3',
-      question: 'What are the key factors to consider when buying a car?',
-      answer:
-        'When buying a car, consider your budget, fuel efficiency, reliability ratings, maintenance costs, safety features, insurance costs, and your intended use. Also factor in resale value and whether you prefer to buy new or used.',
-    },
-    {
-      id: 'g4',
-      question: 'How do I start a healthy diet?',
-      answer:
-        'Start a healthy diet by focusing on whole foods, reducing processed sugar and saturated fats, increasing vegetable and fruit intake, staying hydrated, and practicing portion control. Consult a nutritionist for a personalized plan suited to your needs.',
-    },
-    {
-      id: 'g5',
-      question: 'What is the capital of the United States?',
-      answer:
-        'The capital of the United States is Washington, D.C. It has served as the nation s capital since 1800 and is home to all three branches of the federal government, including the White House, Capitol Building, and Supreme Court.',
-    },
-    {
-      id: 'g6',
-      question: 'What is the speed of light?',
-      answer:
-        'The speed of light in a vacuum is approximately 299,792,458 meters per second, often abbreviated as c. This constant is fundamental to Einstein s theory of relativity and serves as the ultimate speed limit in the universe.',
-    },
-  ],
-  reporting: [
-    {
-      id: 'r1',
-      question: 'Bagaimana cara membuat laporan baru?',
-      answer:
-        'Untuk membuat laporan baru, kunjungi halaman utama dan isi formulir laporan yang tersedia. Tuliskan deskripsi masalah secara jelas, sertakan lokasi kejadian, dan lampirkan bukti foto jika ada. Setelah mengisi semua kolom, klik tombol kirim.',
-    },
-    {
-      id: 'r2',
-      question: 'Apa saja jenis laporan yang dapat saya buat?',
-      answer:
-        'Anda dapat melaporkan berbagai masalah infrastruktur kota seperti jalan rusak, lampu jalan mati, sampah liar, banjir, dan masalah fasilitas publik lainnya. Pastikan laporan sesuai dengan kategori yang tersedia.',
-    },
-    {
-      id: 'r3',
-      question: 'Berapa lama waktu respons setelah laporan dikirim?',
-      answer:
-        'Tim kami akan meninjau laporan dalam 1x24 jam. Laporan yang valid akan diteruskan ke instansi terkait dan Anda akan mendapat notifikasi status laporan melalui platform ini.',
-    },
-  ],
-  aspirations: [
-    {
-      id: 'a1',
-      question: 'Apa perbedaan laporan dan aspirasi?',
-      answer:
-        'Laporan digunakan untuk melaporkan masalah yang membutuhkan tindakan segera dari pemerintah. Aspirasi adalah saran, masukan, atau ide yang Anda sampaikan untuk meningkatkan layanan publik di wilayah Anda.',
-    },
-    {
-      id: 'a2',
-      question: 'Apakah aspirasi saya akan dibaca oleh pejabat terkait?',
-      answer:
-        'Ya, setiap aspirasi yang masuk akan dikompilasi dan diteruskan kepada instansi atau pejabat terkait secara berkala. Aspirasi yang mendapat banyak dukungan akan mendapat prioritas perhatian lebih.',
-    },
-  ],
-  tracking: [
-    {
-      id: 't1',
-      question: 'Bagaimana cara melacak status laporan saya?',
-      answer:
-        'Anda dapat melacak status laporan melalui menu Riwayat Pengaduan di profil Anda. Setiap laporan akan menampilkan status terkini seperti Pending, Diproses, Selesai, atau Ditolak.',
-    },
-    {
-      id: 't2',
-      question: 'Apa yang harus saya lakukan jika laporan tidak ada update?',
-      answer:
-        'Jika laporan Anda tidak mendapat update dalam 7 hari kerja, Anda dapat menghubungi tim kami melalui halaman Kontak atau menggunakan fitur follow-up yang tersedia di detail laporan.',
-    },
-  ],
-  privacy: [
-    {
-      id: 'p1',
-      question: 'Apakah identitas saya akan dilindungi saat melapor?',
-      answer:
-        'Ya, kami berkomitmen melindungi privasi Anda. Identitas pelapor tidak akan dipublikasikan secara terbuka. Data Anda hanya digunakan untuk keperluan verifikasi laporan dan komunikasi tindak lanjut.',
-    },
-    {
-      id: 'p2',
-      question: 'Bagaimana Vide mengamankan data pengguna?',
-      answer:
-        'Vide menggunakan enkripsi SSL/TLS untuk semua transmisi data, penyimpanan data yang aman di server terproteksi, dan prosedur keamanan berlapis untuk mencegah akses tidak sah.',
-    },
-  ],
-  account: [
-    {
-      id: 'ac1',
-      question: 'Bagaimana cara mendaftar akun baru?',
-      answer:
-        'Klik tombol Masuk Sebagai Warga di navbar, lalu pilih opsi daftar. Isi formulir pendaftaran dengan data yang valid dan verifikasi email Anda untuk mengaktifkan akun.',
-    },
-    {
-      id: 'ac2',
-      question: 'Bagaimana jika saya lupa kata sandi?',
-      answer:
-        'Pada halaman login, klik Lupa Kata Sandi dan masukkan email yang terdaftar. Kami akan mengirimkan tautan reset kata sandi ke email Anda dalam beberapa menit.',
-    },
-  ],
-};
+function resetFilters() {
+  activeCategory.value = 'all';
+  searchQuery.value = '';
+  faqStore.fetchFaqs();
+}
 
-const currentFaqs = computed(() => faqData[activeCategory.value] ?? []);
+async function loadData() {
+  await Promise.all([faqStore.fetchCategories(), faqStore.fetchFaqs()]);
+}
+
+onMounted(() => {
+  loadData();
+});
 </script>

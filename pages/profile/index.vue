@@ -113,7 +113,7 @@
                 <button
                   type="button"
                   class="px-6 py-2.5 bg-white border border-[#EOEOEO] text-[#F67011] hover:bg-orange-50 text-base font-medium rounded-full transition-all cursor-pointer"
-                  @click="removeAvatar"
+                  @click="handleRemoveAvatar"
                 >
                   Hapus gambar
                 </button>
@@ -135,17 +135,17 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div>
                 <span class="text-base font-regular text-[#757575] block mb-1">Nama Lengkap</span>
-                <p class="text-xl font-semibold text-gray-900">Alexander Graham Bell</p>
+                <p class="text-xl font-semibold text-gray-900">{{ user.name || '-' }}</p>
               </div>
 
               <div>
                 <span class="text-base font-regular text-[#757575] block mb-1">Email</span>
-                <p class="text-xl font-semibold text-gray-900 break-all">{{ user.email }}</p>
+                <p class="text-xl font-semibold text-gray-900 break-all">{{ user.email || '-' }}</p>
               </div>
 
               <div>
                 <span class="text-base font-regular text-[#757575] block mb-1">Nomor Telp.</span>
-                <p class="text-xl font-semibold text-gray-900">{{ user.phone }}</p>
+                <p class="text-xl font-semibold text-gray-900">{{ user.phone || '-' }}</p>
               </div>
             </div>
           </div>
@@ -163,7 +163,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import AppContainer from '@/components/AppContainer.vue';
 import ProfileSidebar from '@/components/ProfileSidebar.vue';
 import EditProfileModal from '@/components/modals/EditProfileModal.vue';
@@ -172,44 +172,58 @@ import { useAuth } from '@/composables/useAuth';
 
 definePageMeta({ layout: 'profile' });
 
-const { user, updateProfile } = useAuth();
+const { user, fetchUserProfile, uploadAvatar, removeAvatar } = useAuth();
 
 const showEditModal = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
 const toast = reactive({ show: false, message: '' });
 
+onMounted(async () => {
+  try {
+    await fetchUserProfile();
+  } catch (err) {
+    console.warn('Failed to fetch user profile:', err);
+  }
+});
+
 const triggerFileInput = () => {
   fileInput.value?.click();
 };
 
-const handleImageUpload = (event: Event) => {
+const handleImageUpload = async (event: Event) => {
   const target = event.target as HTMLInputElement;
   if (target.files && target.files[0]) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (e.target?.result) {
-        updateProfile({ avatarUrl: e.target.result as string });
-        toast.message = 'Gambar profil berhasil diperbarui!';
-        toast.show = true;
-        setTimeout(() => (toast.show = false), 3000);
-      }
-    };
-    reader.readAsDataURL(target.files[0]);
+    const file = target.files[0];
+    try {
+      const res = await uploadAvatar(file);
+      toast.message = res?.message || 'Gambar profil berhasil diperbarui!';
+      toast.show = true;
+      setTimeout(() => (toast.show = false), 3000);
+    } catch (err: any) {
+      toast.message = err?.data?.message || err?.message || 'Gagal memperbarui gambar profil.';
+      toast.show = true;
+      setTimeout(() => (toast.show = false), 3000);
+    } finally {
+      if (fileInput.value) fileInput.value.value = '';
+    }
   }
 };
 
-const removeAvatar = () => {
-  updateProfile({
-    avatarUrl:
-      'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200',
-  });
-  toast.message = 'Gambar profil berhasil dihapus.';
-  toast.show = true;
-  setTimeout(() => (toast.show = false), 3000);
+const handleRemoveAvatar = async () => {
+  try {
+    const res = await removeAvatar();
+    toast.message = res?.message || 'Gambar profil berhasil dihapus.';
+    toast.show = true;
+    setTimeout(() => (toast.show = false), 3000);
+  } catch (err: any) {
+    toast.message = 'Gagal menghapus gambar profil.';
+    toast.show = true;
+    setTimeout(() => (toast.show = false), 3000);
+  }
 };
 
-const handleProfileSaved = () => {
-  toast.message = 'Profil berhasil diperbarui!';
+const handleProfileSaved = (msg?: string) => {
+  toast.message = msg || 'Profil berhasil diperbarui!';
   toast.show = true;
   setTimeout(() => (toast.show = false), 3000);
 };

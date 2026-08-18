@@ -32,7 +32,7 @@
         isExpanded ? '' : 'line-clamp-2',
       ]"
     >
-      {{ report.description }}
+      {{ report.description || report.content }}
     </p>
 
     <!-- Expand Toggle — hanya muncul jika deskripsi benar-benar overflow 2 baris -->
@@ -130,18 +130,12 @@
       <button
         type="button"
         :class="[
-          'px-5 py-2 border border-[#EOEOEO] text-xs sm:text-sm font-medium rounded-full transition-colors shrink-0 focus:outline-none',
-          report.status === 'dibatalkan' ||
-          report.status === 'ditolak' ||
-          report.status === 'selesai'
+          'px-5 py-2 border border-[#E0E0E0] text-xs sm:text-sm font-medium rounded-full transition-colors shrink-0 focus:outline-none',
+          isCancelDisabled
             ? 'text-[#757575] cursor-not-allowed bg-transparent'
             : 'text-[#FF5B4E] hover:bg-red-50 cursor-pointer',
         ]"
-        :disabled="
-          report.status === 'dibatalkan' ||
-          report.status === 'ditolak' ||
-          report.status === 'selesai'
-        "
+        :disabled="isCancelDisabled"
         @click="$emit('delete', report.id)"
       >
         Batalkan Laporan
@@ -151,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, computed, onMounted, nextTick } from 'vue';
 import AppBadge from './AppBadge.vue';
 import type { ReportItem } from '@/composables/useReports';
 
@@ -165,35 +159,36 @@ const isExpanded = ref(false);
 const isOverflowing = ref(false);
 const descRef = ref<HTMLParagraphElement | null>(null);
 
+const isCancelDisabled = computed(() => {
+  const st = props.report.status;
+  return (
+    st === 'dibatalkan' ||
+    st === 'ditolak' ||
+    st === 'selesai' ||
+    st === 'resolved' ||
+    st === 'cancelled'
+  );
+});
+
 onMounted(async () => {
   await nextTick();
   detectOverflow();
 });
 
-/**
- * Deteksi apakah teks deskripsi benar-benar melebihi 2 baris secara aktual.
- * Ukur tinggi elemen saat line-clamp-2 aktif, lalu bandingkan dengan tinggi penuh
- * setelah clamp dilepas sementara. Ini satu-satunya cara yang akurat — bukan karakter.
- */
 const detectOverflow = () => {
   const el = descRef.value;
   if (!el) return;
 
-  // Ukur tinggi saat line-clamp-2 aktif
   const clampedHeight = el.clientHeight;
-
-  // Lepas sementara clamp untuk mengukur tinggi penuh
   el.style.webkitLineClamp = 'unset';
   el.style.overflow = 'visible';
   el.style.display = 'block';
   const fullHeight = el.scrollHeight;
 
-  // Kembalikan ke state semula (Tailwind class akan kembali aktif)
   el.style.webkitLineClamp = '';
   el.style.overflow = '';
   el.style.display = '';
 
-  // Toleransi 4px untuk menghindari false positive akibat rounding pixel
   isOverflowing.value = fullHeight > clampedHeight + 4;
 };
 </script>

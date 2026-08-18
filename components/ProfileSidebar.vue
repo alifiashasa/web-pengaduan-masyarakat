@@ -29,10 +29,10 @@
         <NuxtLink
           to="/profile"
           :class="[
-            'flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular transition-all',
-            currentRoute === '/profile'
-              ? 'bg-[#F67011] text-white shadow-xs pointer-events-none'
-              : 'text-gray-700 hover:bg-gray-100 cursor-pointer',
+            'flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular transition-all cursor-pointer',
+            isProfileActive
+              ? 'bg-[#F67011] text-white shadow-xs'
+              : 'text-gray-700 hover:bg-gray-100',
           ]"
         >
           <img
@@ -40,7 +40,7 @@
             alt="Profile"
             :class="[
               'w-5 h-5 shrink-0 transition-all',
-              currentRoute === '/profile' ? 'brightness-0 invert' : '',
+              isProfileActive ? 'brightness-0 invert' : '',
             ]"
           />
           <span>Profile</span>
@@ -49,10 +49,10 @@
         <NuxtLink
           to="/profile/riwayat"
           :class="[
-            'flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular transition-all',
-            currentRoute === '/profile/riwayat'
-              ? 'bg-[#F67011] text-white shadow-xs pointer-events-none'
-              : 'text-gray-700 hover:bg-gray-100 cursor-pointer',
+            'flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-regular transition-all cursor-pointer',
+            isRiwayatActive
+              ? 'bg-[#F67011] text-white shadow-xs'
+              : 'text-gray-700 hover:bg-gray-100',
           ]"
         >
           <img
@@ -60,7 +60,7 @@
             alt="Riwayat Pengaduan"
             :class="[
               'w-5 h-5 shrink-0 transition-all',
-              currentRoute === '/profile/riwayat' ? '' : 'brightness-0 opacity-70',
+              isRiwayatActive ? 'brightness-0 invert' : 'brightness-0 opacity-70',
             ]"
           />
           <span>Riwayat Pengaduan</span>
@@ -96,12 +96,16 @@ const route = useRoute();
 const router = useRouter();
 const { user, logout } = useAuth();
 
-const currentRoute = computed(() => route.path);
+const cleanPath = computed(() => route.path.replace(/\/$/, '') || '/');
+
+const isProfileActive = computed(() => cleanPath.value === '/profile');
+const isRiwayatActive = computed(() => cleanPath.value === '/profile/riwayat');
+
 const showLogoutDialog = ref(false);
 
-const handleLogout = () => {
+const handleLogout = async () => {
   showLogoutDialog.value = false;
-  logout();
+  await logout();
   router.push('/');
 };
 </script>

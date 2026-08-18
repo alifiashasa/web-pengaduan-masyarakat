@@ -1,22 +1,24 @@
 <template>
   <div class="overflow-x-hidden bg-[#FEFFFF] text-[#0A0A0A]">
-    <section class="landing-pattern relative pt-[36px] pb-[60px]">
+    <section class="landing-pattern relative pt-[24px] pb-[40px] md:pt-[36px] md:pb-[60px]">
       <div class="relative z-10 mx-auto w-full max-w-[1216px] px-4 sm:px-6 lg:px-0">
         <div class="mx-auto max-w-[1000px] text-center">
           <span
-            class="mt-4 inline-flex rounded-full bg-[#FFF7ED] px-3 py-1 text-[14px] font-semibold leading-[18px] text-[#E75A0F]"
+            class="mt-4 inline-flex rounded-full bg-[#FFF7ED] px-3 py-1 text-[10px] md:text-[14px] font-semibold leading-[14px] md:leading-[18px] tracking-wider text-[#E75A0F] uppercase"
           >
             Wilayah Semarang Selatan
           </span>
 
           <h1
-            class="font-urbanist mx-auto mt-4 max-w-[930px] text-[34px] font-semibold leading-[1.15] tracking-[-1.4px] sm:text-[44px] lg:text-[52px]"
+            class="font-urbanist mx-auto mt-4 max-w-[930px] text-[22px] leading-[28px] md:text-[34px] lg:text-[52px] md:leading-[1.15] font-semibold tracking-[-0.8px] md:tracking-[-1.4px]"
           >
             Laporkan Masalah Untuk Mewujudkan
-            <span class="block mt-3">Kota Yang Aman</span>
+            <span class="block mt-1 md:mt-3">Kota Yang Aman</span>
           </h1>
 
-          <p class="mt-4 text-[20px] leading-6 text-[#757575] sm:text-[20px]">
+          <p
+            class="mt-3 md:mt-4 text-[12px] md:text-[20px] leading-[18px] md:leading-6 text-[#757575] max-w-[280px] md:max-w-none mx-auto"
+          >
             Setiap laporan Anda membantu menciptakan lingkungan yang nyaman dan terlindungi bagi
             semua.
           </p>
@@ -24,13 +26,13 @@
 
         <!-- Form Laporan Pengaduan -->
         <form
-          class="mx-auto mt-[50px] max-w-[718px] rounded-[18px] border border-[#EDEDED] bg-white p-[12px] shadow-[0_9px_30px_rgba(17,27,41,0.12)]"
+          class="mx-2 md:mx-auto mt-8 md:mt-[50px] max-w-[718px] rounded-[18px] border border-[#EDEDED] bg-white p-[12px] shadow-[0_9px_30px_rgba(17,27,41,0.12)]"
           @submit.prevent="handleFormSubmit"
         >
           <textarea
             v-model="form.description"
             rows="5"
-            placeholder="Buat laporanmu disini"
+            placeholder="Tulis keluhan/laporan mu disini"
             class="block h-[140px] w-full resize-none rounded-[14px] border border-[#E0E0E0] bg-white px-4 py-4 text-[14px] text-[#0A0A0A] outline-none placeholder:text-[#757575] focus:border-[#E75A0F]"
             required
           />
@@ -221,35 +223,51 @@
       </div>
     </section>
 
-    <section class="w-full overflow-hidden py-6 sm:py-10">
-      <img
-        src="/img/misc/Collaboration.svg"
-        alt="Partner Logos"
-        class="h-auto w-full object-cover sm:object-contain"
-      />
+    <section class="w-full overflow-hidden pt-1 pb-4 md:py-6 logo-marquee-wrapper">
+      <div class="flex w-max logo-marquee-track">
+        <div
+          v-for="groupIndex in 3"
+          :key="groupIndex"
+          class="flex shrink-0 logo-marquee-group"
+          :aria-hidden="groupIndex > 1 ? 'true' : undefined"
+        >
+          <img
+            src="/img/misc/Collaboration.svg"
+            alt="Partner Logos"
+            class="h-[80px] md:h-[136px] w-auto shrink-0 object-contain grayscale opacity-95"
+          />
+        </div>
+      </div>
     </section>
 
     <!-- Alur Langkah Pengaduan -->
     <section>
       <div class="mx-auto w-full max-w-[1216px] px-4 sm:px-6 lg:px-0">
-        <div class="grid gap-5 md:grid-cols-2">
+        <div class="grid gap-3 md:gap-5 md:grid-cols-2">
           <article
             v-for="step in steps"
             :key="step.number"
-            class="relative flex h-[230px] w-full max-w-[598px] overflow-hidden rounded-[20px] bg-[#18171C] px-[28px] py-[31px] text-white"
+            class="relative flex h-[160px] md:h-[230px] w-full overflow-hidden rounded-[20px] bg-[#18171C] px-5 py-4 md:px-[28px] md:py-[31px] text-white"
           >
+            <!-- Nomor 1-4 as background on mobile, flex item on desktop -->
             <div
-              class="flex w-[110px] shrink-0 select-none items-center justify-center pl-4 text-[200px] font-bold leading-none tracking-normal text-[#9E9E9E]/20"
+              class="absolute left-4 top-1/2 -translate-y-1/2 text-[120px] font-bold leading-none text-[#9E9E9E]/10 select-none z-0 md:static md:translate-y-0 md:flex md:w-[110px] md:shrink-0 md:items-center md:justify-center md:pl-4 md:text-[200px] md:text-[#9E9E9E]/20"
             >
               {{ step.number }}
             </div>
 
-            <div class="relative z-10 ml-6 flex flex-1 flex-col justify-center">
-              <div class="mb-4 text-[#FEFFFF]">
-                <component :is="step.icon" />
+            <div class="relative z-10 pl-16 md:pl-0 md:ml-6 flex flex-1 flex-col justify-center">
+              <div class="mb-2 md:mb-4 text-[#FEFFFF]">
+                <component :is="step.icon" class="h-6 w-6 md:h-7 md:w-7" />
               </div>
-              <h3 class="text-[15px] text-[#EOEOEO] font-semibold leading-5">{{ step.title }}</h3>
-              <p class="mt-3 max-w-[360px] text-[12px] leading-[18px] text-[#EOEOEO]">
+              <h3
+                class="text-[14px] md:text-[15px] text-[#E0E0E0] font-semibold leading-tight md:leading-5"
+              >
+                {{ step.title }}
+              </h3>
+              <p
+                class="mt-1 md:mt-3 max-w-[360px] text-[11px] md:text-[12px] leading-normal md:leading-[18px] text-[#A3A3A3] md:text-[#E0E0E0]"
+              >
                 {{ step.description }}
               </p>
             </div>
@@ -259,16 +277,18 @@
     </section>
 
     <!-- Tentang Kami & Statistik -->
-    <section class="mt-[84px]">
+    <section class="mt-12 md:mt-[84px]">
       <div
-        class="mx-auto grid w-full max-w-[1216px] grid-cols-1 items-center gap-[56px] px-4 sm:px-6 lg:grid-cols-2 lg:px-0"
+        class="mx-auto grid w-full max-w-[1216px] grid-cols-1 items-center gap-8 md:gap-[56px] px-4 sm:px-6 lg:grid-cols-2 lg:px-0"
       >
-        <div>
-          <h2 class="text-[32px] font-semibold leading-tight tracking-[-0.8px]">
+        <div class="order-2 lg:order-1">
+          <h2 class="text-[24px] md:text-[32px] font-semibold leading-tight tracking-[-0.8px]">
             Sigap Bantu Warga
           </h2>
 
-          <p class="mt-5 max-w-[580px] text-[15px] leading-[24px] text-[#OAOAOA]">
+          <p
+            class="mt-3 md:mt-5 max-w-[580px] text-[12px] md:text-[15px] leading-relaxed md:leading-[24px] text-[#0A0A0A]"
+          >
             Website ini hadir untuk memudahkan setiap warga dalam menyampaikan laporan masalah di
             lingkungan sekitar. Dengan sistem yang sederhana dan cepat, siapa pun dapat
             berpartisipasi menjaga kenyamanan bersama. Dengan adanya website ini, masyarakat tidak
@@ -277,12 +297,16 @@
             sejahtera.
           </p>
 
-          <div class="mt-[54px] grid grid-cols-3 gap-6 text-center">
+          <div class="mt-8 md:mt-[54px] grid grid-cols-3 gap-2 md:gap-6 text-center">
             <div v-for="stat in stats" :key="stat.value">
-              <strong class="block text-[32px] font-semibold leading-none tracking-[-1px]">
+              <strong
+                class="block text-[22px] md:text-[32px] font-semibold leading-none tracking-[-1px]"
+              >
                 {{ stat.value }}
               </strong>
-              <p class="mx-auto mt-5 max-w-[200px] text-[15px] leading-[22px] text-[#757575]">
+              <p
+                class="mx-auto mt-2 md:mt-5 max-w-[200px] text-[10px] md:text-[15px] leading-tight md:leading-[22px] text-[#757575]"
+              >
                 <span class="block">{{ stat.line1 }}</span>
                 <span class="block">{{ stat.line2 }}</span>
               </p>
@@ -290,19 +314,50 @@
           </div>
         </div>
 
-        <div class="overflow-hidden rounded-[20px]">
+        <div class="overflow-hidden rounded-[20px] order-1 lg:order-2">
           <img
             src="/assets/cover/sigap-bantu-warga.webp"
             alt="Sigap Bantu Warga"
-            class="h-[382px] w-full object-cover"
+            class="h-[200px] md:h-[382px] w-full object-cover"
           />
         </div>
       </div>
     </section>
 
     <!-- Testimoni Warga -->
-    <section class="mt-[88px] overflow-hidden pb-[40px]">
-      <div class="ml-auto w-[calc(100%-max(16px,calc((100vw-1216px)/2)))]">
+    <section class="mt-12 md:mt-[88px] overflow-hidden pb-[40px] px-4 md:px-0">
+      <!-- Mobile View: Vertical Stack -->
+      <div class="flex flex-col md:hidden gap-4 w-full">
+        <article
+          v-for="(testimonial, index) in displayTestimonials"
+          :key="'mob-' + testimonial.author + '-' + index"
+          class="flex flex-col rounded-[20px] bg-[#F5F5F5] px-6 py-6"
+        >
+          <div class="flex items-center gap-3 mb-3">
+            <img
+              v-if="testimonial.avatar"
+              :src="testimonial.avatar"
+              :alt="testimonial.author"
+              class="h-10 w-10 rounded-full object-cover shrink-0"
+            />
+            <img
+              v-else
+              src="/assets/icons/tanda-kutip.svg"
+              alt="Tanda Kutip"
+              class="h-8 w-8 shrink-0 object-contain object-left"
+            />
+            <p class="text-[14px] text-[#171717] font-semibold">
+              {{ testimonial.author }}
+            </p>
+          </div>
+          <p class="text-[14px] leading-relaxed text-[#525252]">
+            {{ testimonial.text }}
+          </p>
+        </article>
+      </div>
+
+      <!-- Desktop View: Horizontal Marquee -->
+      <div class="hidden md:block ml-auto w-[calc(100%-max(16px,calc((100vw-1216px)/2)))]">
         <div class="flex w-max marquee-track">
           <div
             v-for="groupIndex in 4"
@@ -311,21 +366,29 @@
             :aria-hidden="groupIndex > 1 ? 'true' : undefined"
           >
             <article
-              v-for="(testimonial, index) in testimonials"
+              v-for="(testimonial, index) in displayTestimonials"
               :key="testimonial.author + '-' + groupIndex + '-' + index"
               class="flex h-[334px] w-[336.6px] shrink-0 flex-col rounded-[20px] bg-[#F5F5F5] px-[20px] pb-[18px] pt-[24px]"
             >
-              <img
-                src="/assets/icons/tanda-kutip.svg"
-                alt="Tanda Kutip"
-                class="h-[72px] w-[68px] shrink-0 object-contain object-left"
-              />
+              <div class="flex items-center justify-between">
+                <img
+                  src="/assets/icons/tanda-kutip.svg"
+                  alt="Tanda Kutip"
+                  class="h-[48px] w-[45px] shrink-0 object-contain object-left"
+                />
+                <img
+                  v-if="testimonial.avatar"
+                  :src="testimonial.avatar"
+                  :alt="testimonial.author"
+                  class="h-12 w-12 rounded-full object-cover shrink-0 border border-white shadow-sm"
+                />
+              </div>
 
-              <p class="mt-4 text-[19px] leading-[25px] text-[#171717]">
+              <p class="mt-4 text-[17px] leading-[24px] text-[#171717] line-clamp-6">
                 {{ testimonial.text }}
               </p>
 
-              <p class="mt-auto text-[14px] text-[#757575]">
+              <p class="mt-auto text-[14px] text-[#757575] font-medium">
                 {{ testimonial.author }}
               </p>
             </article>
@@ -345,12 +408,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h, reactive, ref } from 'vue';
+import { computed, h, onMounted, reactive, ref } from 'vue';
 import LoginRequiredModal from '@/components/modals/LoginRequiredModal.vue';
 import ReportConfirmationModal from '@/components/modals/ReportConfirmationModal.vue';
 import ToastNotification from '@/components/ToastNotification.vue';
 import { useAuth } from '@/composables/useAuth';
 import { useReports } from '@/composables/useReports';
+import { useComplaints } from '@/composables/useComplaints';
+import { useTestimonials } from '@/composables/useTestimonials';
 import { HugeiconsIcon } from '@hugeicons/vue';
 import {
   GlobalSearchIcon,
@@ -365,10 +430,17 @@ interface AttachedFile {
   size: string;
   type: 'image' | 'pdf';
   url: string;
+  rawFile?: File;
 }
 
 const { isLoggedIn } = useAuth();
 const { addReport } = useReports();
+const { createComplaint, loading: isSubmitting, error: complaintError } = useComplaints();
+const { testimonials: apiTestimonials, fetchTestimonials } = useTestimonials();
+
+onMounted(() => {
+  fetchTestimonials();
+});
 
 const showLoginModal = ref(false);
 const showConfirmModal = ref(false);
@@ -437,24 +509,34 @@ const stats = [
   { value: '500+', line1: 'Orang terbantu dengan', line2: 'layanan kami' },
 ];
 
-const testimonials = [
+const fallbackTestimonials = [
   {
-    text: 'bagus cocok buat aku, kalo punya jerawat yang baru muncul muncul terus dipakein ini bisa kempes beso',
-    author: 'Rachmad Supard',
+    text: 'Pelayanan sangat responsif dan cepat. Pengaduan jalan rusak langsung mendapat respon dari pihak terkait.',
+    author: 'Budi Santoso',
+    avatar: 'https://ui-avatars.com/api/?name=Budi+Santoso',
   },
   {
-    text: 'Aku cobain produk ini masih jaman sekolah, karena gak tau apa produk yg bagus. Dan alhamdulillah ini',
-    author: 'Rafi',
+    text: 'Aplikasi yang sangat membantu warga untuk menyampaikan aspirasi dan kendala di lingkungan secara langsung.',
+    author: 'Rafi Supardi',
+    avatar: 'https://ui-avatars.com/api/?name=Rafi+Supardi',
   },
   {
-    text: 'Agak cekit2 di wajah. Menyerapnya agak lama di T zone. Selebihnya bagus sih. Ga ada efek buruk yang',
+    text: 'Proses penanganan pengaduan transparan dan bisa dipantau secara real-time. Terima kasih tim!',
     author: 'Anya Tayler',
-  },
-  {
-    text: 'emak gw yg make ni,w nyoba tp gabgt di komuk lsgg jerawatan. di emak gw mah fine2 aja ga ngpa2 gw si',
-    author: 'Rachmad Rafi Supardi',
+    avatar: 'https://ui-avatars.com/api/?name=Anya+Tayler',
   },
 ];
+
+const displayTestimonials = computed(() => {
+  if (apiTestimonials.value && apiTestimonials.value.length > 0) {
+    return apiTestimonials.value.map((item) => ({
+      text: item.content,
+      author: item.name,
+      avatar: item.avatar_url,
+    }));
+  }
+  return fallbackTestimonials;
+});
 
 const handleFileUpload = (event: Event) => {
   const input = event.target as HTMLInputElement;
@@ -476,6 +558,7 @@ const handleFileUpload = (event: Event) => {
           size: formatFileSize(file.size),
           type: isPdf ? 'pdf' : 'image',
           url: reader.result as string,
+          rawFile: file,
         });
       }
     };
@@ -508,27 +591,50 @@ const handleFormSubmit = () => {
   processReportSubmission();
 };
 
-const processReportSubmission = () => {
-  addReport({
-    title: form.description.slice(0, 45) + (form.description.length > 45 ? '...' : ''),
-    description: form.description,
-    location: form.location,
-    province: '',
-    city: '',
-    category: '',
-    images: attachedFiles.value.map((f) => f.url),
-  });
+const processReportSubmission = async () => {
+  if (form.description.trim().length < 10) {
+    toast.message = 'Isi laporan minimal 10 karakter.';
+    toast.show = true;
+    setTimeout(() => (toast.show = false), 3000);
+    return;
+  }
 
-  toast.message = 'Laporan Anda telah terkirim!';
-  toast.show = true;
-  setTimeout(() => {
-    toast.show = false;
-  }, 3000);
+  try {
+    const rawFiles = attachedFiles.value
+      .map((f) => f.rawFile)
+      .filter((f): f is File => f instanceof File);
 
-  form.description = '';
-  form.location = '';
-  attachedFiles.value = [];
-  hasConfirmedTerms.value = false;
+    const response = await createComplaint({
+      content: form.description,
+      location: form.location,
+      images: rawFiles,
+    });
+
+    if (response && response.success) {
+      toast.message = response.message || 'Laporan Anda telah berhasil terkirim!';
+      toast.show = true;
+      setTimeout(() => {
+        toast.show = false;
+      }, 3000);
+
+      form.description = '';
+      form.location = '';
+      attachedFiles.value = [];
+      hasConfirmedTerms.value = false;
+    } else {
+      toast.message = complaintError.value || 'Gagal mengirim laporan.';
+      toast.show = true;
+      setTimeout(() => {
+        toast.show = false;
+      }, 3000);
+    }
+  } catch (err: any) {
+    toast.message = err.message || 'Terjadi kesalahan saat mengirim laporan.';
+    toast.show = true;
+    setTimeout(() => {
+      toast.show = false;
+    }, 3000);
+  }
 };
 </script>
 
@@ -565,5 +671,40 @@ const processReportSubmission = () => {
   100% {
     transform: translateX(-100%);
   }
+}
+
+.logo-marquee-track {
+  display: flex;
+  width: max-content;
+}
+
+.logo-marquee-group {
+  flex-shrink: 0;
+  display: flex;
+  animation: logo-scroll-left 35s linear infinite;
+}
+
+.logo-marquee-track:hover .logo-marquee-group {
+  animation-play-state: paused;
+}
+
+@keyframes logo-scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.logo-marquee-wrapper {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 22%,
+    black 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
 }
 </style>

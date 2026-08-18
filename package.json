@@ -14,8 +14,10 @@
   "dependencies": {
     "@hugeicons/core-free-icons": "^4.2.3",
     "@hugeicons/vue": "^1.0.7",
+    "@pinia/nuxt": "0.5.5",
     "@vee-validate/nuxt": "^4.12.6",
     "axios": "^1.6.8",
+    "firebase": "^12.17.1",
     "lottie-web": "^5.13.0",
     "moment": "^2.30.1",
     "nuxt": "^3.10.3",

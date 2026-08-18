@@ -1,6 +1,6 @@
 <template>
-  <footer class="bg-[#18171C] text-white pt-12 pb-8">
-    <div class="mx-auto w-full max-w-[1216px] px-4 sm:px-6 lg:px-0">
+  <footer class="bg-[#18171C] text-white pt-10 pb-8 px-4 md:px-0">
+    <div class="mx-auto w-full max-w-[1216px] px-0 sm:px-6 lg:px-0">
       <!-- Top Section -->
       <div class="flex flex-col gap-10 md:flex-row md:items-start md:justify-start md:gap-[120px]">
         <!-- Brand & Slogan -->
@@ -15,32 +15,34 @@
         </div>
 
         <!-- Links + Top Copyright -->
-        <div class="flex flex-wrap items-center gap-x-[72px] gap-y-4 pt-2">
+        <div
+          class="flex flex-col md:flex-row md:items-center gap-5 md:gap-x-[72px] md:gap-y-4 pt-2"
+        >
           <NuxtLink
             to="/"
-            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase"
+            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#E0E0E0] transition-colors uppercase"
           >
             HOMEPAGE
           </NuxtLink>
           <a
             href="#tentang"
-            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase"
+            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#E0E0E0] transition-colors uppercase"
           >
             TENTANG KAMI
           </a>
           <NuxtLink
             to="/faq"
-            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase"
+            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#E0E0E0] transition-colors uppercase"
           >
             FAQ
           </NuxtLink>
           <NuxtLink
             to="/kontak"
-            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#EOEOEO] transition-colors uppercase"
+            class="text-[14px] font-semibold tracking-wider text-white hover:text-[#E0E0E0] transition-colors uppercase"
           >
             KONTAK
           </NuxtLink>
-          <span class="text-[14px] text-[#EOEOEO] font-medium ml-4">
+          <span class="hidden md:inline text-[14px] text-[#E0E0E0] font-medium ml-4">
             © 2025 MUM. All rights reserved.
           </span>
         </div>
@@ -48,9 +50,9 @@
 
       <!-- Divider line -->
       <div
-        class="mt-10 border-t border-[#2A292E] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+        class="mt-10 border-t border-[#2A292E] pt-6 flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-6"
       >
-        <p class="text-[13px] text-[#EOEOEO] font-medium">© 2025 MUM. All rights reserved.</p>
+        <p class="text-[13px] text-[#E0E0E0] font-medium">© 2025 MUM. All rights reserved.</p>
 
         <!-- Social Icons -->
         <div class="flex items-center gap-4">

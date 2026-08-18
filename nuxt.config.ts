@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: false },
-  modules: ['@nuxtjs/i18n', '@vee-validate/nuxt'],
+  modules: ['@nuxtjs/i18n', '@vee-validate/nuxt', '@pinia/nuxt'],
   css: ['~/assets/css/main.css', '~/assets/scss/main.scss'],
   postcss: {
     plugins: {
@@ -36,9 +36,17 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiUrl: process.env.VITE_APP_API_URL,
-      apiKey: process.env.VITE_APP_API_KEY,
-      baseUrl: process.env.VITE_APP_BASE_URL,
+      apiUrl:
+        process.env.VITE_APP_API_URL || 'https://backoffice-pengaduan-masyarakat.can.co.id/api',
+      apiKey: process.env.VITE_APP_API_KEY || '',
+      baseUrl: process.env.VITE_APP_BASE_URL || 'https://backoffice-pengaduan-masyarakat.can.co.id',
+      firebaseApiKey: process.env.VITE_FIREBASE_API_KEY || '',
+      firebaseAuthDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN || '',
+      firebaseProjectId: process.env.VITE_FIREBASE_PROJECT_ID || '',
+      firebaseStorageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET || '',
+      firebaseMessagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
+      firebaseAppId: process.env.VITE_FIREBASE_APP_ID || '',
+      firebaseMeasurementId: process.env.VITE_FIREBASE_MEASUREMENT_ID || '',
     },
   },
 });

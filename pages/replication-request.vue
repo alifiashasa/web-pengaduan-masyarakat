@@ -2,11 +2,10 @@
   <div class="bg-white min-h-screen">
     <div class="mx-auto w-full max-w-[1216px] px-4 sm:px-6 lg:px-0">
       <!-- Header -->
-      <div class="pt-12 pb-6 text-center">
-        <div class="inline-flex items-center justify-center mb-4">
+      <div class="pt-6 sm:pt-12 pb-4 sm:pb-6 text-center">
+        <div class="inline-flex items-center justify-center mb-2 sm:mb-4">
           <svg
-            width="44"
-            height="44"
+            class="w-8 h-8 sm:w-11 sm:h-11"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -23,12 +22,14 @@
         </div>
 
         <h1
-          class="text-[28px] sm:text-[40px] font-semibold text-[#0A0A0A] leading-tight mb-3 font-urbanist"
+          class="text-[22px] sm:text-[40px] font-semibold text-[#0A0A0A] leading-tight mb-2 sm:mb-3 font-urbanist"
         >
           Ajukan Replikasi Sistem
         </h1>
 
-        <p class="text-[14px] sm:text-[20px] text-[#555555] leading-relaxed max-w-none mx-auto">
+        <p
+          class="text-[14px] sm:text-[20px] text-[#555555] leading-normal sm:leading-relaxed max-w-[600px] sm:max-w-none mx-auto"
+        >
           Tertarik untuk mengimplementasikan platform Vide untuk kebutuhan wilayah atau organisasi
           Anda? Silakan lengkapi data Anda dan<br class="hidden sm:inline" />
           tim kami akan segera menghubungi Anda.
@@ -36,12 +37,38 @@
       </div>
 
       <!-- Form + Mascot -->
-      <div class="pb-16 mt-6">
-        <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
-          <!-- Form -->
-          <div class="w-full lg:max-w-[664px] flex flex-col gap-5">
+      <div class="pb-12 sm:pb-16 mt-2 sm:mt-6">
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center lg:items-center">
+          <!-- Mascot (Order 1 on mobile, Order 2 on desktop) -->
+          <div
+            class="order-1 lg:order-2 w-full lg:flex-1 flex items-center justify-center py-2 lg:py-0 self-center"
+          >
+            <div
+              class="relative w-[220px] h-[220px] sm:w-[300px] sm:h-[300px] lg:w-[380px] lg:h-[380px] shrink-0 overflow-visible select-none lg:translate-x-[30px] mx-auto"
+            >
+              <!-- Lottie player -->
+              <div
+                ref="lottieContainer"
+                class="lottie-mascot absolute inset-0 w-full h-full pointer-events-none"
+                :class="isLottieReady && !hasLottieError ? 'opacity-100' : 'opacity-0'"
+              ></div>
+
+              <!-- Fallback -->
+              <img
+                v-if="hasLottieError"
+                src="/assets/illustrations/fallback-mascot.svg"
+                alt="Ilustrasi tidak tersedia"
+                class="absolute inset-0 w-full h-full object-contain select-none"
+                draggable="false"
+                @error="hasImageError = true"
+              />
+            </div>
+          </div>
+
+          <!-- Form (Order 2 on mobile, Order 1 on desktop) -->
+          <div class="order-2 lg:order-1 w-full lg:max-w-[664px] flex flex-col gap-3.5 sm:gap-5">
             <div class="flex flex-col gap-1.5">
-              <label for="rep-nama" class="text-[14px] font-medium text-[#0A0A0A]">
+              <label for="rep-nama" class="text-[13px] sm:text-[14px] font-medium text-[#0A0A0A]">
                 Nama Lengkap
               </label>
 
@@ -50,7 +77,7 @@
                 v-model="form.nama"
                 type="text"
                 placeholder="Masukkan nama lengkap Anda"
-                class="w-full h-[48px] px-4 text-[16px] text-[#0A0A0A] placeholder-[#ABABAB] border border-[#D4D4D4] rounded-[10px] bg-white focus:outline-none focus:border-[#E75A0F] focus:ring-1 focus:ring-[#E75A0F] transition-colors"
+                class="w-full h-[44px] sm:h-[48px] px-3.5 sm:px-4 text-[14px] sm:text-[16px] text-[#0A0A0A] placeholder-[#ABABAB] border border-[#D4D4D4] rounded-[10px] bg-white focus:outline-none focus:border-[#E75A0F] focus:ring-1 focus:ring-[#E75A0F] transition-colors"
                 :class="{ 'border-red-400': errors.nama }"
               />
 
@@ -60,7 +87,7 @@
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="rep-email" class="text-[14px] font-medium text-[#0A0A0A]">
+              <label for="rep-email" class="text-[13px] sm:text-[14px] font-medium text-[#0A0A0A]">
                 Alamat Email
               </label>
 
@@ -69,7 +96,7 @@
                 v-model="form.email"
                 type="email"
                 placeholder="contoh@email.com"
-                class="w-full h-[48px] px-4 text-[16px] text-[#0A0A0A] placeholder-[#ABABAB] border border-[#D4D4D4] rounded-[10px] bg-white focus:outline-none focus:border-[#E75A0F] focus:ring-1 focus:ring-[#E75A0F] transition-colors"
+                class="w-full h-[44px] sm:h-[48px] px-3.5 sm:px-4 text-[14px] sm:text-[16px] text-[#0A0A0A] placeholder-[#ABABAB] border border-[#D4D4D4] rounded-[10px] bg-white focus:outline-none focus:border-[#E75A0F] focus:ring-1 focus:ring-[#E75A0F] transition-colors"
                 :class="{ 'border-red-400': errors.email }"
               />
 
@@ -79,7 +106,7 @@
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="rep-telp" class="text-[14px] font-medium text-[#0A0A0A]">
+              <label for="rep-telp" class="text-[13px] sm:text-[14px] font-medium text-[#0A0A0A]">
                 Nomor Telepon
               </label>
 
@@ -87,8 +114,8 @@
                 id="rep-telp"
                 v-model="form.telepon"
                 type="tel"
-                placeholder="08xx – xxxx –– xxxx"
-                class="w-full h-[48px] px-4 text-[16px] text-[#0A0A0A] placeholder-[#ABABAB] border border-[#D4D4D4] rounded-[10px] bg-white focus:outline-none focus:border-[#E75A0F] focus:ring-1 focus:ring-[#E75A0F] transition-colors"
+                placeholder="08xx - xxxx - xxxx"
+                class="w-full h-[44px] sm:h-[48px] px-3.5 sm:px-4 text-[14px] sm:text-[16px] text-[#0A0A0A] placeholder-[#ABABAB] border border-[#D4D4D4] rounded-[10px] bg-white focus:outline-none focus:border-[#E75A0F] focus:ring-1 focus:ring-[#E75A0F] transition-colors"
                 :class="{ 'border-red-400': errors.telepon }"
               />
 
@@ -98,7 +125,51 @@
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="rep-pesan" class="text-[14px] font-medium text-[#0A0A0A]">
+              <label
+                for="rep-organisasi"
+                class="text-[13px] sm:text-[14px] font-medium text-[#0A0A0A]"
+              >
+                Organisasi / Instansi
+              </label>
+
+              <input
+                id="rep-organisasi"
+                v-model="form.organisasi"
+                type="text"
+                placeholder="Contoh: Dinas Kominfo Kota Surabaya"
+                class="w-full h-[44px] sm:h-[48px] px-3.5 sm:px-4 text-[14px] sm:text-[16px] text-[#0A0A0A] placeholder-[#ABABAB] border border-[#D4D4D4] rounded-[10px] bg-white focus:outline-none focus:border-[#E75A0F] focus:ring-1 focus:ring-[#E75A0F] transition-colors"
+                :class="{ 'border-red-400': errors.organisasi }"
+              />
+
+              <p v-if="errors.organisasi" class="text-[12px] text-red-500">
+                {{ errors.organisasi }}
+              </p>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label
+                for="rep-wilayah"
+                class="text-[13px] sm:text-[14px] font-medium text-[#0A0A0A]"
+              >
+                Wilayah / Daerah
+              </label>
+
+              <input
+                id="rep-wilayah"
+                v-model="form.wilayah"
+                type="text"
+                placeholder="Contoh: Surabaya, Jawa Timur"
+                class="w-full h-[44px] sm:h-[48px] px-3.5 sm:px-4 text-[14px] sm:text-[16px] text-[#0A0A0A] placeholder-[#ABABAB] border border-[#D4D4D4] rounded-[10px] bg-white focus:outline-none focus:border-[#E75A0F] focus:ring-1 focus:ring-[#E75A0F] transition-colors"
+                :class="{ 'border-red-400': errors.wilayah }"
+              />
+
+              <p v-if="errors.wilayah" class="text-[12px] text-red-500">
+                {{ errors.wilayah }}
+              </p>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label for="rep-pesan" class="text-[13px] sm:text-[14px] font-medium text-[#0A0A0A]">
                 Pesan Pengajuan
               </label>
 
@@ -107,7 +178,7 @@
                 v-model="form.pesan"
                 rows="5"
                 placeholder="Tuliskan informasi atau pesan Anda di sini..."
-                class="w-full px-4 py-3 text-[16px] text-[#0A0A0A] placeholder-[#ABABAB] border border-[#D4D4D4] rounded-[10px] bg-white focus:outline-none focus:border-[#E75A0F] focus:ring-1 focus:ring-[#E75A0F] transition-colors resize-none"
+                class="w-full px-3.5 sm:px-4 py-3 text-[14px] sm:text-[16px] text-[#0A0A0A] placeholder-[#ABABAB] border border-[#D4D4D4] rounded-[10px] bg-white focus:outline-none focus:border-[#E75A0F] focus:ring-1 focus:ring-[#E75A0F] transition-colors resize-none"
                 :class="{ 'border-red-400': errors.pesan }"
               ></textarea>
 
@@ -119,7 +190,7 @@
             <!-- Agreement -->
             <div class="flex flex-col gap-1 mt-1">
               <label class="flex items-start gap-2.5 cursor-pointer">
-                <div class="relative shrink-0 mt-[9.5px]">
+                <div class="relative shrink-0 mt-[2px] sm:mt-[9.5px]">
                   <input id="rep-agree" v-model="form.agree" type="checkbox" class="sr-only" />
 
                   <div
@@ -146,7 +217,9 @@
                   </div>
                 </div>
 
-                <span class="text-[12px] text-[#0A0A0ACC] leading-relaxed">
+                <span
+                  class="text-[14px] text-[#0A0A0ACC] leading-snug sm:leading-relaxed"
+                >
                   Saya memahami dan menyetujui
 
                   <button
@@ -168,11 +241,16 @@
 
             <button
               type="button"
-              :disabled="isSubmitting"
-              class="w-full h-[48px] bg-[#F67011] hover:bg-[#d4500b] disabled:opacity-60 disabled:cursor-not-allowed text-white text-[15px] font-semibold rounded-[12px] transition-all flex items-center justify-center gap-2 cursor-pointer"
+              :disabled="replicationStore.loading"
+              class="w-full h-[46px] sm:h-[48px] bg-[#F67011] hover:bg-[#d4500b] disabled:opacity-60 disabled:cursor-not-allowed text-white text-[15px] font-semibold rounded-[12px] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1"
               @click="handleSubmit"
             >
-              <svg v-if="isSubmitting" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+              <svg
+                v-if="replicationStore.loading"
+                class="animate-spin w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
                 <circle
                   class="opacity-25"
                   cx="12"
@@ -189,32 +267,8 @@
                 />
               </svg>
 
-              {{ isSubmitting ? 'Mengirim...' : 'Kirim' }}
+              {{ replicationStore.loading ? 'Mengirim...' : 'Kirim' }}
             </button>
-          </div>
-
-          <!-- Mascot -->
-          <div class="w-full lg:flex-1 self-stretch flex items-center justify-center pt-6 lg:pt-0">
-            <div
-              class="relative w-[300px] h-[300px] sm:w-[340px] sm:h-[340px] lg:w-[380px] lg:h-[380px] shrink-0 overflow-visible select-none lg:translate-x-[30px] lg:-translate-y-[30px]"
-            >
-              <!-- Lottie player -->
-              <div
-                ref="lottieContainer"
-                class="lottie-mascot absolute inset-0 w-full h-full pointer-events-none"
-                :class="isLottieReady && !hasLottieError ? 'opacity-100' : 'opacity-0'"
-              ></div>
-
-              <!-- Fallback -->
-              <img
-                v-if="hasLottieError"
-                src="/assets/illustrations/fallback-mascot.svg"
-                alt="Ilustrasi tidak tersedia"
-                class="absolute inset-0 w-full h-full object-contain select-none"
-                draggable="false"
-                @error="hasImageError = true"
-              />
-            </div>
           </div>
         </div>
       </div>
@@ -228,15 +282,17 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
-
 import { useRoute } from 'vue-router';
-
 import TermsModal from '@/components/modals/TermsModal.vue';
 import ToastNotification from '@/components/ToastNotification.vue';
+import { useReplicationStore } from '@/stores/replication';
+import { useAuthStore } from '@/stores/auth';
 
 definePageMeta({ layout: 'default' });
 
 const route = useRoute();
+const replicationStore = useReplicationStore();
+const authStore = useAuthStore();
 
 const hasImageError = ref(route.query['mock-error'] === 'true');
 
@@ -247,6 +303,12 @@ const hasLottieError = ref(false);
 let anim: any = null;
 
 onMounted(async () => {
+  if (authStore.user) {
+    if (authStore.user.name) form.nama = authStore.user.name;
+    if (authStore.user.email) form.email = authStore.user.email;
+    if (authStore.user.phone) form.telepon = authStore.user.phone;
+  }
+
   if (route.query['mock-error'] === 'true') {
     hasLottieError.value = true;
     hasImageError.value = true;
@@ -319,12 +381,13 @@ const form = reactive({
   nama: '',
   email: '',
   telepon: '',
+  organisasi: '',
+  wilayah: '',
   pesan: '',
   agree: false,
 });
 
 const errors = reactive<Record<string, string>>({});
-const isSubmitting = ref(false);
 const toast = reactive({ show: false, message: '' });
 const showTerms = ref(false);
 
@@ -346,8 +409,12 @@ const validate = (): boolean => {
     errors.email = 'Format email tidak valid.';
   }
 
-  if (!form.telepon.trim()) {
-    errors.telepon = 'Nomor telepon wajib diisi.';
+  if (!form.organisasi.trim()) {
+    errors.organisasi = 'Organisasi / Instansi wajib diisi.';
+  }
+
+  if (!form.wilayah.trim()) {
+    errors.wilayah = 'Wilayah / Daerah wajib diisi.';
   }
 
   if (!form.pesan.trim()) {
@@ -364,22 +431,60 @@ const validate = (): boolean => {
 const handleSubmit = async () => {
   if (!validate()) return;
 
-  isSubmitting.value = true;
+  replicationStore.resetState();
 
-  await new Promise((resolve) => setTimeout(resolve, 1400));
+  const result = await replicationStore.submitReplicationRequest({
+    name: form.nama,
+    email: form.email,
+    phone: form.telepon || undefined,
+    organization: form.organisasi,
+    region: form.wilayah,
+    message: form.pesan,
+    agree_terms: form.agree,
+  });
 
-  isSubmitting.value = false;
+  if (result && result.success) {
+    toast.message = result.message || 'Pengajuan replikasi sistem berhasil dikirim.';
+    toast.show = true;
 
-  toast.message = 'Permohonan berhasil dikirim!';
-  toast.show = true;
+    setTimeout(() => {
+      toast.show = false;
+    }, 3000);
 
-  setTimeout(() => {
-    toast.show = false;
-  }, 3000);
+    // Reset form
+    Object.assign(form, {
+      nama: authStore.user?.name || '',
+      email: authStore.user?.email || '',
+      telepon: authStore.user?.phone || '',
+      organisasi: '',
+      wilayah: '',
+      pesan: '',
+      agree: false,
+    });
+    Object.keys(errors).forEach((key) => delete errors[key]);
+  } else {
+    if (replicationStore.fieldErrors) {
+      if (replicationStore.fieldErrors.name) errors.nama = replicationStore.fieldErrors.name[0];
+      if (replicationStore.fieldErrors.email) errors.email = replicationStore.fieldErrors.email[0];
+      if (replicationStore.fieldErrors.phone)
+        errors.telepon = replicationStore.fieldErrors.phone[0];
+      if (replicationStore.fieldErrors.organization)
+        errors.organisasi = replicationStore.fieldErrors.organization[0];
+      if (replicationStore.fieldErrors.region)
+        errors.wilayah = replicationStore.fieldErrors.region[0];
+      if (replicationStore.fieldErrors.message)
+        errors.pesan = replicationStore.fieldErrors.message[0];
+      if (replicationStore.fieldErrors.agree_terms)
+        errors.agree = replicationStore.fieldErrors.agree_terms[0];
+    }
 
-  // Reset form
-  Object.assign(form, { nama: '', email: '', telepon: '', pesan: '', agree: false });
-  Object.keys(errors).forEach((key) => delete errors[key]);
+    toast.message =
+      replicationStore.error || 'Gagal mengirim permohonan replikasi. Silakan coba lagi.';
+    toast.show = true;
+    setTimeout(() => {
+      toast.show = false;
+    }, 4000);
+  }
 };
 </script>
 

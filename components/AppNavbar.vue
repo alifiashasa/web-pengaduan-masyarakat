@@ -1,7 +1,7 @@
 <template>
   <header class="sticky top-0 z-40 border-b border-[#EDEDED] bg-white">
     <div
-      class="mx-auto flex h-[80px] w-full max-w-[1216px] items-center justify-between px-4 sm:px-6 lg:px-0"
+      class="mx-auto flex h-16 md:h-[80px] w-full max-w-[1216px] items-center justify-between px-4 sm:px-6 lg:px-0"
     >
       <!-- Bagian Kiri: Logo & Navigasi -->
       <div class="flex items-center gap-10">
@@ -9,7 +9,7 @@
           <img
             src="/assets/icons/logo-web.svg"
             alt="Vide Logo"
-            class="h-10 w-auto object-contain"
+            class="h-8 md:h-10 w-auto object-contain"
           />
         </NuxtLink>
 
@@ -394,11 +394,11 @@ const showMobileMenu = ref(false);
 const showProfileDropdown = ref(false);
 const showLogoutDialog = ref(false);
 
-const handleLogout = () => {
+const handleLogout = async () => {
   showLogoutDialog.value = false;
   showProfileDropdown.value = false;
   showMobileMenu.value = false;
-  logout();
+  await logout();
   router.push('/');
 };
 </script>

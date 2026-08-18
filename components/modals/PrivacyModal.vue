@@ -48,74 +48,53 @@
               <!-- Title & Subtitle -->
               <div>
                 <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
-                  Kebijakan Privasi
+                  {{ legalStore.privacyData?.title || 'Kebijakan Privasi' }}
                 </h3>
                 <p class="text-xs sm:text-sm text-[#757575] font-normal mt-0.5">
-                  Terakhir Diperbarui: 23 Desember 2025
+                  <span v-if="legalStore.privacyData?.updated_at">
+                    Terakhir Diperbarui: {{ legalStore.privacyData.updated_at }}
+                  </span>
+                  <span v-else>Terakhir Diperbarui: 13 Januari 2026</span>
                 </p>
               </div>
             </div>
 
             <!-- Scrollable Content Box -->
             <div
-              class="bg-gray-50/80 border border-gray-100/80 rounded-2xl p-5 mb-6 max-h-[360px] sm:max-h-[400px] overflow-y-auto text-xs sm:text-sm text-[#0A0A0A] leading-relaxed space-y-4"
+              class="bg-gray-50/80 border border-gray-100/80 rounded-2xl p-5 mb-6 max-h-[360px] sm:max-h-[400px] overflow-y-auto text-xs sm:text-sm text-[#0A0A0A] leading-relaxed"
             >
-              <p>
-                Privasi Anda sangat penting bagi kami. Kebijakan Privasi ini menjelaskan bagaimana
-                Vide mengumpulkan, menggunakan, dan melindungi informasi pribadi yang Anda berikan
-                saat menggunakan platform kami.
-              </p>
-
-              <div class="space-y-2">
-                <h4 class="font-semibold text-gray-900 text-sm sm:text-base">
-                  1. Informasi yang Kami Kumpulkan
-                </h4>
-                <p>
-                  Kami mengumpulkan informasi untuk memberikan layanan yang lebih baik kepada
-                  seluruh pengguna, yang meliputi:
-                </p>
-                <ul class="space-y-2 pl-1">
-                  <li class="flex items-start gap-2">
-                    <span class="text-gray-400 select-none">•</span>
-                    <span
-                      ><strong class="font-semibold text-gray-900">Informasi Profil:</strong> Nama
-                      lengkap, alamat email, dan nomor telepon yang Anda berikan saat mendaftar atau
-                      mengisi formulir.</span
-                    >
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-gray-400 select-none">•</span>
-                    <span
-                      ><strong class="font-semibold text-gray-900">Konten Laporan:</strong> Data,
-                      foto, atau deskripsi yang Anda unggah sebagai bagian dari pengaduan atau
-                      aspirasi.</span
-                    >
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-gray-400 select-none">•</span>
-                    <span
-                      ><strong class="font-semibold text-gray-900">Informasi Teknis:</strong> Alamat
-                      IP, jenis perangkat, dan catatan aktivitas (log) untuk keperluan keamanan
-                      sistem.</span
-                    >
-                  </li>
-                </ul>
+              <!-- Loading State -->
+              <div v-if="legalStore.loadingPrivacy" class="flex flex-col items-center justify-center py-10 gap-3">
+                <svg class="animate-spin h-7 w-7 text-[#E75A0F]" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="text-xs text-gray-500 font-medium">Memuat Kebijakan Privasi...</p>
               </div>
 
-              <div class="space-y-2">
-                <h4 class="font-semibold text-gray-900 text-sm sm:text-base">
-                  2. Penggunaan Informasi
-                </h4>
-                <p>Informasi yang kami kumpulkan digunakan untuk:</p>
-                <ul class="space-y-2 pl-1">
-                  <li class="flex items-start gap-2">
-                    <span class="text-gray-400 select-none">•</span>
-                    <span
-                      ><strong class="font-semibold text-gray-900">Verifikasi & Validasi:</strong>
-                      Memastikan laporan yang masuk adalah nyata dan bukan bot/hoaks.</span
-                    >
-                  </li>
-                </ul>
+              <!-- Error State -->
+              <div v-else-if="legalStore.errorPrivacy" class="text-center py-8">
+                <p class="text-sm text-red-500 mb-3">{{ legalStore.errorPrivacy }}</p>
+                <button
+                  type="button"
+                  class="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+                  @click="legalStore.fetchPrivacy()"
+                >
+                  Coba Lagi
+                </button>
+              </div>
+
+              <!-- Dynamic Content from API -->
+              <div v-else-if="legalStore.privacyData?.content" class="whitespace-pre-line text-[#0A0A0A]">
+                {{ legalStore.privacyData.content }}
+              </div>
+
+              <!-- Fallback Content if no API data yet -->
+              <div v-else class="space-y-4">
+                <p>
+                  Privasi Anda sangat penting bagi kami. Kebijakan Privasi ini menjelaskan bagaimana
+                  Vide mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda.
+                </p>
               </div>
             </div>
 
@@ -144,11 +123,36 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { watch, onMounted } from 'vue';
+import { useLegalStore } from '@/stores/legal';
+
+const props = defineProps<{
   isOpen: boolean;
 }>();
 
 const emit = defineEmits(['close', 'accept']);
+const legalStore = useLegalStore();
+
+const loadPrivacyIfNeeded = () => {
+  if (!legalStore.privacyData && !legalStore.loadingPrivacy) {
+    legalStore.fetchPrivacy();
+  }
+};
+
+onMounted(() => {
+  if (props.isOpen) {
+    loadPrivacyIfNeeded();
+  }
+});
+
+watch(
+  () => props.isOpen,
+  (newVal) => {
+    if (newVal) {
+      loadPrivacyIfNeeded();
+    }
+  }
+);
 
 const handleAccept = () => {
   emit('accept');

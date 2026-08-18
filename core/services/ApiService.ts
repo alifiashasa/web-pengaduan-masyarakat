@@ -11,13 +11,24 @@ interface IFetch {
 
 const useMyFetch = ({ request, options }: IFetch) => {
   const config = useRuntimeConfig();
+  const apiBase = (
+    (config.public.apiUrl as string) ||
+    (config.public.baseUrl as string) ||
+    ''
+  ).replace(/\/+$/, '');
+  const headers: Record<string, string> = {
+    Accept: 'application/json',
+    ...options?.headers,
+  };
+
+  if (config.public.apiKey) {
+    headers['x-api-key'] = config.public.apiKey as string;
+  }
+
   const newOptions: any = {
     ...options,
-    baseURL: config.public.baseURL,
-    headers: {
-      'x-api-key': config.public.apiKey,
-      Accept: 'application/json',
-    },
+    baseURL: apiBase,
+    headers,
   };
   return useFetch(request, newOptions);
 };

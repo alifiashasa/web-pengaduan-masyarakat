@@ -20,18 +20,21 @@
             <NuxtLink
               to="/#tentang"
               class="text-[#757575] hover:text-gray-900 transition-colors font-medium"
-              >Tentang Kami</NuxtLink
             >
+              Tentang Kami
+            </NuxtLink>
             <NuxtLink
               to="/faq"
               class="text-[#757575] hover:text-gray-900 transition-colors font-medium"
-              >FAQ</NuxtLink
             >
+              FAQ
+            </NuxtLink>
             <NuxtLink
               to="/kontak"
               class="text-[#757575] hover:text-gray-900 transition-colors font-medium"
-              >Kontak</NuxtLink
             >
+              Kontak
+            </NuxtLink>
             <NuxtLink
               to="/replication-request"
               class="font-medium text-[#0A0A0A] hover:text-[#F67011] transition-colors"
@@ -40,11 +43,11 @@
             </NuxtLink>
             <div class="flex items-center gap-2 pl-2">
               <img
-                :src="user.avatarUrl"
-                :alt="user.name"
+                :src="user?.avatar || '/assets/avatar-placeholder.png'"
+                :alt="user?.name || 'User'"
                 class="w-8 h-8 rounded-full object-cover border border-gray-200"
               />
-              <span class="font-medium text-[#757575] text-xs sm:text-sm">{{ user.email }}</span>
+              <span class="font-medium text-[#757575] text-xs sm:text-sm">{{ user?.email }}</span>
             </div>
           </div>
         </nav>
@@ -67,22 +70,59 @@
                     ? 'bg-[#FEFFFF] text-gray-900 border-[#E0E0E0] shadow-2xs font-semibold'
                     : 'bg-transparent text-[#757575] border-transparent hover:text-gray-900',
                 ]"
-                @click="activeFilter = tab.id"
+                @click="changeFilter(tab.id)"
               >
                 {{ tab.label }}
               </button>
             </div>
           </div>
 
+          <!-- Loading State -->
+          <div v-if="loading" class="py-12 text-center text-gray-500 text-sm">
+            <div
+              class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-brand-orange border-t-transparent mb-2"
+            ></div>
+            <p>Memuat riwayat pengaduan...</p>
+          </div>
+
           <!-- Daftar Riwayat Laporan -->
-          <div v-if="filteredReports.length > 0 && !isMockEmpty" class="space-y-4">
+          <div v-else-if="reports.length > 0 && !isMockEmpty" class="space-y-4">
             <ReportCard
-              v-for="report in filteredReports"
+              v-for="report in reports"
               :key="report.id"
               :report="report"
               @view-detail="openDetail"
               @delete="confirmDelete"
             />
+
+            <!-- Pagination jika total halaman > 1 -->
+            <div
+              v-if="meta.last_page > 1"
+              class="flex items-center justify-between pt-4 border-t border-gray-100"
+            >
+              <span class="text-xs text-gray-500">
+                Halaman {{ meta.current_page }} dari {{ meta.last_page }} (Total
+                {{ meta.total }} laporan)
+              </span>
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  class="px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  :disabled="meta.current_page <= 1"
+                  @click="goToPage(meta.current_page - 1)"
+                >
+                  Sebelumnya
+                </button>
+                <button
+                  type="button"
+                  class="px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  :disabled="meta.current_page >= meta.last_page"
+                  @click="goToPage(meta.current_page + 1)"
+                >
+                  Selanjutnya
+                </button>
+              </div>
+            </div>
           </div>
 
           <EmptyState
@@ -116,6 +156,7 @@
       </div>
     </div>
 
+    <!-- Modals -->
     <ReportDetailModal
       :isOpen="showDetailModal"
       :report="selectedReport"
@@ -124,7 +165,6 @@
 
     <DeleteReportModal
       :isOpen="showDeleteModal"
-      :report="selectedReport"
       @close="showDeleteModal = false"
       @confirm="handleDeleteConfirm"
     />
@@ -134,27 +174,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue';
+import { ref, computed, onMounted, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import ProfileSidebar from '@/components/ProfileSidebar.vue';
 import ReportCard from '@/components/ReportCard.vue';
 import EmptyState from '@/components/EmptyState.vue';
-import AppButton from '@/components/AppButton.vue';
 import ReportDetailModal from '@/components/modals/ReportDetailModal.vue';
 import DeleteReportModal from '@/components/modals/DeleteReportModal.vue';
 import ToastNotification from '@/components/ToastNotification.vue';
 import { useReports, type ReportItem } from '@/composables/useReports';
-import { useAuth } from '@/composables/useAuth';
+import { useComplaints } from '@/composables/useComplaints';
+import { useAuthStore } from '@/stores/auth';
 
 definePageMeta({ layout: 'profile' });
 
 const route = useRoute();
-const { user } = useAuth();
-const { reports, deleteReport } = useReports();
+const authStore = useAuthStore();
+const user = computed(() => authStore.user);
+
+const { reports, meta, loading, fetchReports, deleteReport, cancelReport } = useReports();
+const { getComplaintDetail } = useComplaints();
 
 const isMockEmpty = computed(() => route.query['mock-empty'] === 'true');
-
 const activeFilter = ref('terkirim');
+const currentPage = ref(1);
 
 const filterTabs = [
   { id: 'terkirim', label: 'Terkirim' },
@@ -164,24 +207,48 @@ const filterTabs = [
   { id: 'dibatalkan', label: 'Dibatalkan' },
 ];
 
-const filteredReports = computed(() => {
-  if (activeFilter.value === 'terkirim') {
-    return reports.value.filter((r) => r.status === 'terkirim' || r.status === 'pending');
+/**
+ * Mapping filter tab ke query param status API backend
+ */
+const mapTabToApiStatus = (tabId: string): string | undefined => {
+  switch (tabId) {
+    case 'terkirim':
+      return 'pending';
+    case 'diproses':
+      return 'in_review';
+    case 'ditangani':
+      return 'in_progress';
+    case 'selesai':
+      return 'resolved';
+    case 'dibatalkan':
+      return 'cancelled';
+    default:
+      return undefined;
   }
-  if (activeFilter.value === 'diproses') {
-    return reports.value.filter((r) => r.status === 'diproses' || r.status === 'proses');
-  }
-  if (activeFilter.value === 'ditangani') {
-    return reports.value.filter((r) => r.status === 'ditangani');
-  }
-  if (activeFilter.value === 'selesai') {
-    return reports.value.filter((r) => r.status === 'selesai');
-  }
-  if (activeFilter.value === 'dibatalkan') {
-    return reports.value.filter((r) => r.status === 'dibatalkan' || r.status === 'ditolak');
-  }
-  return reports.value;
+};
+
+onMounted(() => {
+  loadData();
 });
+
+const loadData = (page = 1) => {
+  currentPage.value = page;
+  const statusParam = mapTabToApiStatus(activeFilter.value);
+  fetchReports({
+    page,
+    per_page: 10,
+    status: statusParam,
+  });
+};
+
+const changeFilter = (filterId: string) => {
+  activeFilter.value = filterId;
+  loadData(1);
+};
+
+const goToPage = (page: number) => {
+  loadData(page);
+};
 
 // Modals State
 const showDetailModal = ref(false);
@@ -190,9 +257,12 @@ const selectedReport = ref<ReportItem | null>(null);
 const reportIdToDelete = ref<number | null>(null);
 const toast = reactive({ show: false, message: '' });
 
-const openDetail = (report: ReportItem) => {
+const openDetail = async (report: ReportItem) => {
   selectedReport.value = report;
   showDetailModal.value = true;
+  if (report.id) {
+    await getComplaintDetail(report.id);
+  }
 };
 
 const confirmDelete = (id: number) => {
@@ -200,14 +270,25 @@ const confirmDelete = (id: number) => {
   showDeleteModal.value = true;
 };
 
-const handleDeleteConfirm = () => {
+const handleDeleteConfirm = async () => {
   if (reportIdToDelete.value !== null) {
-    deleteReport(reportIdToDelete.value);
+    // Coba cancel/delete ke backend API
+    const res = await deleteReport(reportIdToDelete.value);
     showDeleteModal.value = false;
+    const id = reportIdToDelete.value;
     reportIdToDelete.value = null;
-    toast.message = 'Laporan pengaduan berhasil dihapus.';
+
+    if (res && res.success) {
+      toast.message = 'Laporan pengaduan berhasil dihapus.';
+    } else {
+      // Jika delete gagal, coba panggil cancel
+      await cancelReport(id);
+      toast.message = 'Laporan pengaduan berhasil dibatalkan.';
+    }
+
     toast.show = true;
     setTimeout(() => (toast.show = false), 3000);
+    loadData(currentPage.value);
   }
 };
 </script>

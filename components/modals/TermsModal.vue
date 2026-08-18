@@ -51,66 +51,54 @@
               <!-- Title & Subtitle -->
               <div>
                 <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
-                  Syarat & Ketentuan
+                  {{ legalStore.termsData?.title || 'Syarat & Ketentuan' }}
                 </h3>
                 <p class="text-xs sm:text-sm text-[#757575] font-regular mt-0.5">
-                  Terakhir Diperbarui: 23 Desember 2025
+                  <span v-if="legalStore.termsData?.updated_at">
+                    Terakhir Diperbarui: {{ legalStore.termsData.updated_at }}
+                  </span>
+                  <span v-else>Terakhir Diperbarui: 13 Januari 2026</span>
                 </p>
               </div>
             </div>
 
             <!-- Scrollable Content Box -->
             <div
-              class="bg-gray-50/80 border border-gray-100/80 rounded-2xl p-5 mb-6 max-h-[360px] sm:max-h-[400px] overflow-y-auto text-xs sm:text-sm text-[#OAOAOA] leading-relaxed space-y-4"
+              class="bg-gray-50/80 border border-gray-100/80 rounded-2xl p-5 mb-6 max-h-[360px] sm:max-h-[400px] overflow-y-auto text-xs sm:text-sm text-[#0A0A0A] leading-relaxed"
             >
-              <p>
-                Selamat datang di Vide. Dengan mengakses dan menggunakan platform ini, Anda dianggap
-                telah membaca, memahami, dan menyetujui untuk terikat oleh Syarat dan Ketentuan
-                berikut. Jika Anda tidak menyetujui bagian apa pun dari ketentuan ini, mohon untuk
-                tidak melanjutkan penggunaan layanan kami.
-              </p>
-
-              <div class="space-y-2">
-                <h4 class="font-semibold text-gray-900 text-sm sm:text-base">1. Ketentuan Umum</h4>
-                <ul class="space-y-1.5 pl-2">
-                  <li class="flex items-start gap-2">
-                    <span class="text-gray-400 select-none">•</span>
-                    <span
-                      >Vide adalah platform penyampaian aspirasi dan laporan masyarakat yang
-                      bertujuan untuk meningkatkan transparansi dan kualitas layanan publik.</span
-                    >
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-gray-400 select-none">•</span>
-                    <span
-                      >Layanan ini tersedia untuk masyarakat umum dengan batasan wilayah yang telah
-                      ditentukan oleh pengelola.</span
-                    >
-                  </li>
-                </ul>
+              <!-- Loading State -->
+              <div v-if="legalStore.loadingTerms" class="flex flex-col items-center justify-center py-10 gap-3">
+                <svg class="animate-spin h-7 w-7 text-[#E75A0F]" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="text-xs text-gray-500 font-medium">Memuat Syarat & Ketentuan...</p>
               </div>
 
-              <div class="space-y-2">
-                <h4 class="font-semibold text-gray-900 text-sm sm:text-base">
-                  2. Penggunaan Layanan (Laporan & Aspirasi)
-                </h4>
-                <ul class="space-y-1.5 pl-2">
-                  <li class="flex items-start gap-2">
-                    <span class="text-gray-400 select-none">•</span>
-                    <span
-                      >Pengguna wajib memberikan informasi yang benar, akurat, dan dapat
-                      dipertanggungjawabkan dalam setiap laporan atau aspirasi yang
-                      dikirimkan.</span
-                    >
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-gray-400 select-none">•</span>
-                    <span
-                      >Dilarang keras mengirimkan konten yang mengandung unsur SARA, pornografi,
-                      ujaran kebencian, fitnah, atau informasi palsu</span
-                    >
-                  </li>
-                </ul>
+              <!-- Error State -->
+              <div v-else-if="legalStore.errorTerms" class="text-center py-8">
+                <p class="text-sm text-red-500 mb-3">{{ legalStore.errorTerms }}</p>
+                <button
+                  type="button"
+                  class="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+                  @click="legalStore.fetchTerms()"
+                >
+                  Coba Lagi
+                </button>
+              </div>
+
+              <!-- Dynamic Content from API -->
+              <div v-else-if="legalStore.termsData?.content" class="whitespace-pre-line text-[#0A0A0A]">
+                {{ legalStore.termsData.content }}
+              </div>
+
+              <!-- Fallback Content if no API data yet -->
+              <div v-else class="space-y-4">
+                <p>
+                  Selamat datang di Vide. Dengan mengakses dan menggunakan platform ini, Anda dianggap
+                  telah membaca, memahami, dan menyetujui untuk terikat oleh Syarat dan Ketentuan
+                  berikut.
+                </p>
               </div>
             </div>
 
@@ -139,11 +127,36 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { watch, onMounted } from 'vue';
+import { useLegalStore } from '@/stores/legal';
+
+const props = defineProps<{
   isOpen: boolean;
 }>();
 
 const emit = defineEmits(['close', 'accept']);
+const legalStore = useLegalStore();
+
+const loadTermsIfNeeded = () => {
+  if (!legalStore.termsData && !legalStore.loadingTerms) {
+    legalStore.fetchTerms();
+  }
+};
+
+onMounted(() => {
+  if (props.isOpen) {
+    loadTermsIfNeeded();
+  }
+});
+
+watch(
+  () => props.isOpen,
+  (newVal) => {
+    if (newVal) {
+      loadTermsIfNeeded();
+    }
+  }
+);
 
 const handleAccept = () => {
   emit('accept');
